@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Yellowfir Group Limited | 绿色能源 · 跨境投资 · 专业咨询</title>
+    <meta name="description" content="Yellowfir Group Limited — 香港注册综合性可再生能源服务公司，专注风电光伏开发、跨境投资、财税咨询与全球身份规划。">
+    <meta name="keywords" content="Yellowfir, 可再生能源, 光伏, 风电, 跨境投资, 吉尔吉斯斯坦, 绿色能源">
+    <meta property="og:title" content="Yellowfir Group Limited | 绿色能源 · 跨境投资 · 专业咨询">
+    <meta property="og:description" content="香港注册综合性可再生能源服务公司，专注新能源开发、跨境投资及专业咨询。">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#122b27">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://github.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></noscript>
+    <style>
+        /* ===== Reset & Variables ===== */
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg-primary:#122b27;
+            --bg-alt:#0f2622;
+            --bg-card:#112a26;
+            --bg-dark:#0a1f1c;
+            --bg-darker:#0a1815;
+            --bg-deep:#030f0d;
+            --accent:#00d084;
+            --accent-light:#b3ffda;
+            --accent-glow:rgba(0,208,132,0.2);
+            --text-primary:#eef5f2;
+            --text-secondary:#cfede6;
+            --text-muted:#bbdfd5;
+            --border-card:#2b5a52;
+            --font-stack:'Inter','PingFang SC','Microsoft YaHei','Hiragino Sans GB','WenQuanYi Micro Hei',sans-serif;
+            --radius-card:32px;
+            --radius-item:30px;
+            --radius-stat:48px;
+            --radius-rich:40px;
+            --radius-contact:32px;
+            --shadow-card:0 12px 20px -8px rgba(0,0,0,0.4);
+            --shadow-hover:0 24px 32px -12px var(--accent-glow)
+        }
+
+        html{scroll-behavior:smooth}
+        body{
+            font-family:var(--font-stack);
+            background:var(--bg-primary);
+            color:var(--text-primary);
+            overflow-x:hidden;
+            -webkit-font-smoothing:antialiased
+        }
+        ::-webkit-scrollbar{width:8px}
+        ::-webkit-scrollbar-track{background:var(--bg-darker)}
+        ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
+
+        /* ===== Header ===== */
+        header{
+            position:fixed;width:100%;
+            background:rgba(21,4,4,.75);
+            backdrop-filter:blur(14px);
+            -webkit-backdrop-filter:blur(14px);
+            padding:0 5%;z-index:1000;
+            display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+            border-bottom:1px solid rgba(0,208,132,.4)
+        }
+        .logo-area{display:flex;align-items:center;gap:14px;padding:8px 0}
+        .logo-img{height:56px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));border-radius:8px;transition:transform .2s}
+        .logo-img:hover{transform:scale(1.02)}
+        .brand-name{font-size:1.25rem;font-weight:600;letter-spacing:1px;background:linear-gradient(135deg,var(--accent),var(--accent-light));-webkit-background-clip:text;background-clip:text;color:transparent}
+        nav{display:flex;gap:28px}
+        nav a{color:#f0faf7;text-decoration:none;font-weight:500;font-size:.95rem;transition:color .2s,border-color .2s;border-bottom:2px solid transparent;padding-bottom:4px}
+        nav a:hover,nav a:focus-visible{color:var(--accent);border-bottom-color:var(--accent)}
+        nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+
+        /* ===== Hero ===== */
+        .hero{
+            position:relative;height:100vh;
+            background:linear-gradient(115deg,rgba(0,0,0,.2),rgba(0,40,30,.3)),
+                url('风电光伏电站2.jpg?raw=true') center/cover fixed;
+            display:flex;align-items:flex-end;justify-content:flex-end;overflow:hidden
+        }
+        .hero-art-text{
+            max-width:70%;margin:0 8% 12% 0;text-align:right;
+            backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+            background:rgba(0,25,22,.55);padding:2rem 2.5rem;border-radius:36px;
+            border-right:5px solid var(--accent);
+            border-bottom:2px solid rgba(0,208,132,.5);
+            animation:fadeSlideUp .9s ease-out
+        }
+        .hero-art-text h2{
+            font-size:clamp(2.6rem,7vw,5rem);font-weight:800;
+            background:linear-gradient(130deg,#fff,var(--accent-light),var(--accent));
+            background-size:200% auto;
+            -webkit-background-clip:text;background-clip:text;color:transparent;
+            text-shadow:0 2px 15px rgba(0,0,0,.2);letter-spacing:-.02em;margin-bottom:.75rem
+        }
+        .hero-art-text p{font-size:clamp(1rem,3vw,1.4rem);font-weight:500;color:#e2fef0;letter-spacing:1px}
+
+        @keyframes fadeSlideUp{
+            0%{opacity:0;transform:translateY(40px)}
+            100%{opacity:1;transform:translateY(0)}
+        }
+
+        /* ===== Shared Section ===== */
+        .section{padding:5rem 6%}
+        .section-alt{background:var(--bg-alt)}
+
+        .section-title{
+            font-size:2.5rem;font-weight:700;color:var(--accent);margin-bottom:2rem;
+            position:relative;display:inline-block
+        }
+        .section-title::after{
+            content:'';position:absolute;bottom:-12px;left:0;
+            width:70px;height:4px;background:var(--accent);border-radius:4px
+        }
+        h3.section-title{font-size:2rem;font-weight:700;color:var(--accent);margin-bottom:2rem;position:relative;display:inline-block}
+        h3.section-title::after{content:'';position:absolute;bottom:-12px;left:0;width:70px;height:4px;background:var(--accent);border-radius:4px}
+
+        .text-gradient{background:linear-gradient(135deg,#ef720d,var(--accent-light));-webkit-background-clip:text;background-clip:text;color:transparent}
+        .highlight{color:var(--accent);font-weight:600}
+
+        /* ===== About ===== */
+        .about-bilingual{display:flex;gap:2rem;align-items:stretch;flex-wrap:wrap}
+        .about-cn{flex:1;min-width:280px}
+        .about-en{flex:2;min-width:350px}
+        .about-cn p,.about-en p{line-height:1.6;text-align:justify;margin:1rem 0}
+
+        /* ===== Grid 4 ===== */
+        .grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:2rem}
+        .business-card{background:var(--bg-card);border-radius:var(--radius-card);overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s;box-shadow:var(--shadow-card);border:1px solid var(--border-card)}
+        .business-card:hover{transform:translateY(-8px);border-color:var(--accent);box-shadow:var(--shadow-hover)}
+        .card-img{width:100%;height:180px;object-fit:cover;transition:transform .4s}
+        .business-card:hover .card-img{transform:scale(1.02)}
+        .card-content{padding:1.6rem 1.4rem 1.8rem}
+        .card-content h3{font-size:1.6rem;color:#00e094;margin-bottom:.6rem;font-weight:700}
+        .card-content p{font-size:.9rem;line-height:1.5;color:var(--text-secondary)}
+        .icon-tag{font-size:1.8rem;color:var(--accent);margin-bottom:10px}
+
+        /* ===== Projects ===== */
+        .projects-showcase{display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;margin:2rem 0}
+        .project-item{flex:1;background:#0c221f;padding:1.8rem;border-radius:var(--radius-item);border-left:5px solid var(--accent)}
+
+        /* ===== Stats ===== */
+        .stats{display:flex;flex-wrap:wrap;justify-content:space-around;gap:2rem;background:var(--bg-dark);padding:2rem;border-radius:var(--radius-stat);margin-top:2rem}
+        .stat-number{font-size:2.8rem;font-weight:800;color:var(--accent)}
+
+        /* ===== Profile / Contact Shared ===== */
+        .profile-rich{display:flex;flex-wrap:wrap;gap:2rem;background:#0a1e1b;border-radius:var(--radius-rich);padding:2rem;margin-top:1rem}
+        .contact-flex{display:flex;gap:2rem;flex-wrap:wrap;background:#0b221f;border-radius:var(--radius-contact);padding:2rem}
+
+        /* ===== CTA ===== */
+        .cta-final{text-align:center;width:100%;max-width:70rem;margin:0 auto;padding:5rem 1.5rem 0}
+        .cta-final h2{font-size:clamp(2.5rem,5vw,4rem)}
+        .cta-final h3{font-size:clamp(2rem,4vw,3rem)}
+        .cta-final p{margin-top:1.5rem;color:var(--text-muted)}
+
+        /* ===== Footer ===== */
+        footer.site{margin-top:6rem;border-top:1px solid var(--border-card);background:var(--bg-deep);padding:3rem 0 2rem;text-align:center;font-size:.875rem}
+        footer .container>div{margin-bottom:.5rem}
+        .footer-brand{font-size:1.2rem;font-weight:600}
+        .footer-brand span{color:var(--accent)}
+        .footer-tag{font-size:.85rem;color:var(--text-muted);margin-top:.25rem}
+        .footer-meta{font-size:.75rem;margin-top:.5rem;opacity:.8;color:var(--text-muted)}
+
+        /* ===== Responsive ===== */
+        @media (max-width:768px){
+            header{flex-direction:column;padding:10px 20px}
+            nav{margin-top:8px;gap:18px;flex-wrap:wrap;justify-content:center}
+            .hero-art-text{margin:0 5% 15% 0;max-width:88%;padding:1.2rem 1.8rem}
+            .section{padding:3rem 5%}
+            .about-bilingual{flex-direction:column}
+        }
+        @media (prefers-reduced-motion:reduce){
+            *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context":"https://schema.org",
+        "@type":"Organization",
+        "name":"Yellowfir Group Limited",
+        "description":"综合性可再生能源服务公司",
+        "url":"https://www.yellowfir.com",
+        "address":{
+            "@type":"PostalAddress",
+            "streetAddress":"Unit 421, 4/F, Beverley Commercial Center, 87-105 Chatham Road South",
+            "addressLocality":"Tsim Sha Tsui",
+            "addressRegion":"Hong Kong"
+        },
+        "contactPoint":{
+            "@type":"ContactPoint",
+            "email":"yellowfir@yellowfir.com",
+            "contactType":"business"
+        }
+    }
+    </script>
+</head>
+<body>
+
+<header role="banner">
+    <div class="logo-area">
+        <img class="logo-img" src="New yellowfir Logo（big+WhiteText+blueTrunk）.png?raw=true" alt="Yellowfir Group 标识" width="168" height="56">
+        <span class="brand-name" aria-label="Yellowfir Group">Yellowfir Group <span aria-hidden="true">|</span> <span class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">—</span> Green Energy · Investment · Consultant</span>
+    </div>
+    <nav aria-label="主导航">
+        <a href="#about" aria-label="关于我们"><i class="fas fa-leaf" aria-hidden="true"></i> 关于 about</a>
+        <a href="#business" aria-label="核心业务"><i class="fas fa-solar-panel" aria-hidden="true"></i> 业务 Business</a>
+        <a href="#projects" aria-label="项目展示"><i class="fas fa-charging-station" aria-hidden="true"></i> 项目 Projects</a>
+        <a href="#contact" aria-label="联系我们"><i class="fas fa-envelope" aria-hidden="true"></i> 联系 Contact</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero" aria-label="公司标语">
+        <div class="hero-art-text">
+            <h2>绿色能源，<br>点亮未来</h2>
+            <p>Green Energy, Lighting up the Future</p>
+            <p style="font-size:1rem;margin-top:12px">Leading Renewable Energy Developer</p>
+        </div>
+    </section>
+
+    <section id="about" class="section" aria-label="关于我们">
+        <h2 class="section-title">About Yellowfir</h2>
+        <div style="display:flex;justify-content:center;margin-bottom:2rem">
+            <img src="New yellowfir Logo（big+WhiteText+blueTrunk）.png?raw=true" alt="Yellowfir Group 徽标" style="width:100%;max-width:150px;border:none;padding:0;background:transparent" loading="lazy">
+        </div>
+        <div class="about-bilingual">
+            <div class="about-cn">
+                <p><span class="highlight">Yellowfir Group Limited</span> 是一家注册在香港的综合性可再生能源服务公司（公司注册号：78751009），专注于新能源开发、投资及相关领域的整合服务。董事团队曾任职于中国内地大型国有电力央企核心战略投资岗位，拥有<span class="highlight">超过十年风电、光伏电站开发、投资、建设及运营</span>全链条实战经验。</p>
+                <p>公司以"绿色能源，点亮未来"为使命，通过技术创新与国际合作，为目标国家提供高效可持续的能源方案。目前核心布局中亚，深耕吉尔吉斯斯坦市场，与本地伙伴联合开发<span class="highlight">600MW光伏项目</span>，并规划<span class="highlight">2GW绿色能源+绿色农牧产业园</span>，年均可提供30亿度清洁电力，成为中亚绿色经济标杆。</p>
+                <br>
+                <p>核心竞争力：<strong>本地化运营</strong>（深度理解政策法规）、<strong>国际化合作</strong>（整合全球领先技术及资本）、<strong>专业顾问团队</strong>（涵盖投资架构、财税法律、项目全周期管理）。Yellowfir 致力于成为跨境可再生能源与综合咨询领域的引领者。</p>
+            </div>
+            <div class="about-en">
+                <p><span class="highlight">Yellowfir Group Limited</span> is a Hong Kong-registered comprehensive renewable energy service company (Company Registration No.: 78751009), specializing in new energy development, investment, and integrated services across related sectors. Its board members have previously held core strategic investment roles in major state-owned power enterprises in mainland China, bringing over a decade of hands-on experience across the entire value chain of <span class="highlight">wind and solar power development, investment, construction, and operation</span>.</p>
+                <p>Driven by the mission of "Green Energy, Powering a Bright Future," the company delivers efficient and sustainable energy solutions to target countries through technological innovation and international cooperation. With a strategic focus on Central Asia, Yellowfir has established a strong presence in the Kyrgyzstan market, co-developing a <span class="highlight">600MW solar PV project</span> in partnership with local stakeholders. The company is also planning a <span class="highlight">2GW green energy + green agriculture and animal husbandry industrial park</span>, capable of generating 3 billion kWh of clean electricity annually, positioning itself as a benchmark for green economy development in Central Asia.</p>
+                <p>Core Competitiveness: <strong>Localized operations</strong> (deep understanding of policies and regulations), <strong>international collaboration</strong> (integrating world-class technologies and capital), and <strong>expert advisory teams</strong> (covering investment structuring, tax, legal, and full project lifecycle management). Yellowfir is committed to becoming a leader in cross-border renewable energy and comprehensive consulting services.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="business" class="section section-alt" aria-label="核心业务">
+        <h2 class="section-title">核心专业板块 <span style="font-weight:400;font-size:1.2rem">Core Professional Business</span></h2>
+        <div class="grid-4">
+            <article class="business-card">
+                <img class="card-img" src="风电光伏电站1.jpeg?raw=true" alt="可再生能源开发" loading="lazy">
+                <div class="card-content">
+                    <div class="icon-tag"><i class="fas fa-solar-panel" aria-hidden="true"></i></div>
+                    <h3>可再生能源开发 <span style="font-weight:400;font-size:1rem">Renewable Energy</span></h3>
+                    <p style="text-align:justify">太阳能、风能及储能项目规划、设计与建设。从资源评估、可研到EPC实施，推动区域能源绿色转型，助力净零排放目标。</p>
+                    <p style="text-align:justify">Solar, wind, and energy storage project planning, design, and construction. From resource assessment and feasibility studies to EPC implementation, driving regional energy transition and contributing to net-zero emission goals.</p>
+                </div>
+            </article>
+            <article class="business-card">
+                <img class="card-img" src="战略投资.jpg?raw=true" alt="战略与投资" loading="lazy">
+                <div class="card-content">
+                    <div class="icon-tag"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
+                    <h3>战略和投资 <span style="font-weight:400;font-size:1rem">Strategy &amp; Investment</span></h3>
+                    <p style="text-align:justify">跨境投资架构设计、项目风险评估、融资方案、新能源绿地投资及并购顾问，为企业提供高价值战略增长路径。</p>
+                    <p style="text-align:justify">Cross-border investment structure design, project risk assessment, financing solutions, greenfield renewable energy investment, and M&amp;A advisory, providing enterprises with high-value strategic growth paths.</p>
+                </div>
+            </article>
+            <article class="business-card">
+                <img class="card-img" src="财税咨询.jpg?raw=true" alt="财税咨询" loading="lazy">
+                <div class="card-content">
+                    <div class="icon-tag"><i class="fas fa-calculator" aria-hidden="true"></i></div>
+                    <h3>财税咨询 <span style="font-weight:400;font-size:1rem">Financial and Tax Consulting</span></h3>
+                    <p style="text-align:justify">跨境税务筹划、国际财税架构、绿地项目财务模型、合规申报及长期财务规划，确保资金效率及稳健收益。</p>
+                    <p style="text-align:justify">Cross-border tax planning, international fiscal and tax structuring, financial modeling for greenfield projects, compliance filing, and long-term financial planning to ensure capital efficiency and stable returns.</p>
+                </div>
+            </article>
+            <article class="business-card">
+                <img class="card-img" src="移民咨询.jpg?raw=true" alt="移民与全球身份规划" loading="lazy">
+                <div class="card-content">
+                    <div class="icon-tag"><i class="fas fa-passport" aria-hidden="true"></i></div>
+                    <h3>移民咨询 <span style="font-weight:400;font-size:1rem">Immigration Consultation</span></h3>
+                    <p style="text-align:justify">全球身份规划、投资移民、海外安居及家族办公室配套服务，结合新能源产业投资提供定制化居留与公民身份方案。</p>
+                    <p style="text-align:justify">Global identity planning, investment immigration, overseas relocation, and family office support services, offering customized residency and citizenship solutions integrated with renewable energy industry investments.</p>
+                </div>
+            </article>
+        </div>
+        <p style="margin-top:2rem;font-size:.9rem;text-align:center;color:var(--text-muted)"><i class="fas fa-globe-asia" aria-hidden="true"></i> 四大板块协同赋能，提供从绿色能源开发到跨境投资、财税及身份规划的一站式专业服务。</p>
+        <p style="margin-top:2rem;font-size:.9rem;text-align:center;color:var(--text-muted)"><i class="fas fa-globe-asia" aria-hidden="true"></i> Four business divisions work in synergy to deliver one-stop professional services spanning green energy development, cross-border investment, tax and finance, and identity planning.</p>
+    </section>
+
+    <section id="projects" class="section" aria-label="标志性项目">
+        <h2 class="section-title">标志性项目 <span style="font-weight:400;font-size:1.2rem">Landmark Project</span></h2>
+        <div class="projects-showcase">
+            <article class="project-item">
+                <i class="fas fa-solar-panel" style="font-size:2rem;color:var(--accent)" aria-hidden="true"></i>
+                <h3 style="margin:12px 0">巴特肯 600MW 光伏电站</h3>
+                <h3 style="margin:12px 0;font-weight:400;font-size:1.1rem">Batken 600MW Photovoltaic Power Plant</h3>
+                <p style="text-align:justify">吉尔吉斯斯坦 · 巴特肯州，已完成阶段性开发，年均可提供约9亿度清洁电力，助推区域能源独立与低碳转型。</p>
+                <p style="text-align:justify">Batken Region, Kyrgyzstan · Phase development completed, capable of supplying approximately 900 million kWh of clean electricity annually, boosting regional energy independence and low-carbon transition.</p>
+            </article>
+            <article class="project-item">
+                <i class="fas fa-industry" style="font-size:2rem;color:var(--accent)" aria-hidden="true"></i>
+                <h3 style="margin:12px 0">2GW 绿色能源+农牧产业园</h3>
+                <h3 style="margin:12px 0;font-weight:400;font-size:1.1rem">2GW Green Energy + Agriculture and Animal Husbandry Industrial Park</h3>
+                <p style="text-align:justify">总规划 2GW 风光储一体化 + 生态农业，预计年发电30亿度，构建绿色循环经济标杆，吸引国际绿色资本。</p>
+                <p style="text-align:justify">With a total planned capacity of 2GW for integrated wind, solar, and energy storage plus eco-agriculture, the project is expected to generate 3 billion kWh of electricity annually, establishing a benchmark for a green circular economy and attracting international green capital.</p>
+            </article>
+            <article class="project-item">
+                <i class="fas fa-charging-station" style="font-size:2rem;color:var(--accent)" aria-hidden="true"></i>
+                <h3 style="margin:12px 0">中亚跨境新能源枢纽</h3>
+                <h3 style="margin:12px 0;font-weight:400;font-size:1.1rem">Central Asia Cross-border New Energy Hub</h3>
+                <p style="text-align:justify">联合国际机构开发储能及智能微网，配套战略投资框架，服务一带一路新能源走廊。</p>
+                <p style="text-align:justify">Collaborating with international institutions to develop energy storage and smart microgrids, supported by a strategic investment framework, serving the Belt and Road New Energy Corridor.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="section section-alt" aria-label="关键指标与影响力">
+        <h2 class="section-title">关键指标 <span style="font-weight:400;font-size:1.2rem">&amp; 影响力</span> <span style="font-weight:400;font-size:1rem">Key Indicators &amp; Impact</span></h2>
+        <div class="stats">
+            <div><span class="stat-number">2 GW+</span><br>规划容量<br><span style="font-size:.85rem;color:var(--text-muted)">Planned Capacity</span></div>
+            <div><span class="stat-number">600 MW</span><br>成熟建设阶段<br><span style="font-size:.85rem;color:var(--text-muted)">Active Construction Phase</span></div>
+            <div><span class="stat-number">30 亿 kWh</span><br>年绿色电力输出<br><span style="font-size:.85rem;color:var(--text-muted)">Annual Green Power Output</span></div>
+            <div><span class="stat-number">10+ 年</span><br>行业顶尖经验<br><span style="font-size:.85rem;color:var(--text-muted)">Industry-Leading Expertise</span></div>
+        </div>
+        <p style="text-align:center;margin-top:2rem">项目每年减少碳排放约200万吨，为中亚能源结构转型和可持续发展注入强劲动力。</p>
+        <p style="text-align:center;margin-top:2rem">The project reduces carbon emissions by approximately 2 million tons annually, injecting strong momentum into the energy structure transformation and sustainable development of Central Asia.</p>
+    </section>
+
+    <section class="section" aria-label="专业服务优势">
+        <h2 class="section-title">专业服务优势 <span style="font-weight:400;font-size:1.2rem">Professional Service Advantage</span></h2>
+        <div style="display:flex;flex-wrap:wrap;gap:1.8rem;justify-content:space-between">
+            <article style="flex:1;background:#0f2420;border-radius:28px;padding:1.5rem">
+                <i class="fas fa-chart-pie" style="font-size:2rem;color:var(--accent)" aria-hidden="true"></i>
+                <h3 style="margin:1rem 0 .5rem">战略投资全案</h3>
+                <p style="font-weight:500;margin-bottom:.5rem;font-size:.9rem;color:var(--text-muted)">Strategic Investment Solutions</p>
+                <p style="text-align:justify">行业分析、交易架构、跨境并购及绿地投资风险管理，确保复杂交易高效落地。</p>
+                <p style="text-align:justify">Industry analysis, transaction structuring, cross-border M&amp;A, and greenfield investment risk management, ensuring efficient execution of complex deals.</p>
+            </article>
+            <article style="flex:1;background:#0f2420;border-radius:28px;padding:1.5rem">
+                <i class="fas fa-file-invoice-dollar" style="font-size:2rem;color:var(--accent)" aria-hidden="true"></i>
+                <h3 style="margin:1rem 0 .5rem">国际财税筹划</h3>
+                <p style="font-weight:500;margin-bottom:.5rem;font-size:.9rem;color:var(--text-muted)">International Tax Planning</p>
+                <p style="text-align:justify">离岸架构、双边税收协定应用、转移定价及合规咨询，提升投资收益。</p>
+                <p style="text-align:justify">Offshore structuring, application of bilateral tax treaties, transfer pricing, and compliance consulting to enhance investment returns.</p>
+            </article>
+            <article style="flex:1;background:#0f2420;border-radius:28px;padding:1.5rem">
+                <i class="fas fa-globe" style="font-size:2rem;color:var(--accent)" aria-hidden="true"></i>
+                <h3 style="margin:1rem 0 .5rem">全球身份规划</h3>
+                <p style="font-weight:500;margin-bottom:.5rem;font-size:.9rem;color:var(--text-muted)">Global Identity Planning</p>
+                <p style="text-align:justify">移民、海外资产配置及家族办公室，实现国际化布局。</p>
+                <p style="text-align:justify">Immigration, overseas asset allocation and family office, achieving internationalization.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="cta-final" aria-label="号召行动">
+        <div>
+            <img class="logo-img" src="New yellowfir Logo（big+WhiteText+blueTrunk）.png?raw=true" alt="Yellowfir Group" style="height:200px" loading="lazy">
+        </div>
+        <h2>一同<span class="italic text-gradient">点亮</span>下一个十年</h2>
+        <h3><span class="italic text-gradient">Lighting </span>The Next 10 Years Together</h3>
+        <p>无论您是寻求投资机会、跨境合作伙伴，还是希望布局绿色能源未来，Yellowfir 期待与您同行。<br><em>Whether you seek investment opportunities, cross-border partners, or a place in the green-energy future, Yellowfir walks with you.</em></p>
+    </section>
+</main>
+
+<section id="contact" class="section section-alt" aria-label="联系方式">
+    <h2 class="section-title">联络 <span style="font-weight:400;font-size:1.2rem">· Contact</span></h2>
+    <div class="contact-flex">
+        <div style="flex:1">
+            <i class="fas fa-globe" aria-hidden="true" style="font-size:1.2rem;color:var(--accent)"></i>
+            <span><strong> Website:</strong></span>
+            <a href="https://www.yellowfir.com" style="color:#00d084" target="_blank" rel="noopener noreferrer">www.yellowfir.com</a>
+            <p>&nbsp;</p>
+            <i class="fas fa-envelope" style="font-size:1.8rem;color:var(--accent)" aria-hidden="true"></i>
+            <span><strong> Email:</strong> yellowfir@yellowfir.com</span>
+            <p>&nbsp;</p>
+            <p><i class="fas fa-map-marker-alt" aria-hidden="true" style="color:var(--accent)"></i> <strong>香港总部 · Hong Kong headquarters：</strong> Unit 421, 4/F, Beverley Commercial Center, No.87-105 Chatham Road South, Tsim Sha Tsui, Hong Kong</p>
+        </div>
+        <div style="flex:1;border-left:1px solid #2c5b52;padding-left:1.5rem">
+            <p><strong>业务咨询 · Service Inquiries：</strong> yellowfir@yellowfir.com</p>
+            <p>&nbsp;</p>
+            <p><strong>职业 · Career：</strong> yellowfir@yellowfir.com</p>
+            <div style="margin-top:20px">
+                <a href="https://www.linkedin.com/in/yellowfir" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin" style="font-size:1.8rem;margin-right:18px;opacity:.8;color:#eef5f2;transition:opacity .2s" aria-hidden="true"></i>
+                </a>
+                <a href="https://twitter.com/xwindowscn" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                    <i class="fab fa-twitter" style="font-size:1.8rem;margin-right:18px;opacity:.8;color:#eef5f2;transition:opacity .2s" aria-hidden="true"></i>
+                </a>
+                <a href="https://wa.me/85262713196" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                    <i class="fab fa-whatsapp" style="font-size:1.8rem;margin-right:18px;opacity:.8;color:#eef5f2;transition:opacity .2s" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="site" role="contentinfo">
+    <div class="container">
+        <div class="footer-brand">Yellow<span>fir</span> Group</div>
+        <div class="footer-tag">Green Energy · Investment · Consultant</div>
+        <div>&copy; <script>document.write(new Date().getFullYear())</script> Yellowfir Group Limited. All rights reserved.</div>
+        <div class="footer-meta">Hong Kong · Company Reg. No. 78751009</div>
+    </div>
+</footer>
+</body>
+</html>

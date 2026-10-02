@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Yellowfir Group Limited | 绿色能源 · 跨境投资 · 专业咨询</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
+    <script>
+    // Safari favicon workaround: Safari blocks raw.githubusercontent.com favicons due to CSP
+    if (/^((?!chrome|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent)) {
+        document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]').forEach(function(el) {
+            el.href = el.href.replace('raw.githubusercontent.com/xwindowscn/yellowfir/refs/heads/main/', 'www.yellowfir.com/')
+                              .replace('raw.githubusercontent.com/xwindowscn/yellowfir/main/', 'www.yellowfir.com/');
+        });
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+            background: #0a1a1a;
+            color: #eef5f2;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            -webkit-tap-highlight-color: rgba(0, 208, 132, 0.2);
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.65)),
+                url('风电光伏电站2.jpg') center 75% / cover;
+            pointer-events: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00d084;
+            border-radius: 10px;
+        }
+
+        /* 固定头部 */
+        header {
+            position: fixed;
+            width: 100%;
+            background: rgba(21, 4, 4, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            padding: 0 4%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            border-bottom: 1px solid rgba(0, 208, 132, 0.4);
+            transition: all 0.2s;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            min-width: 0;
+            flex-shrink: 1;
+            overflow: hidden;
+        }
+
+        /* 使用真正的image.png logo */
+        .logo-img {
+            height: 44px;
+            width: auto;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+            transition: transform 0.2s;
+            border-radius: 6px;
+        }
+        .logo-img:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-name {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 1;
+            min-width: 0;
+            background: linear-gradient(135deg, #00d084, #b3ffda);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .brand-text {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+            min-width: 0;
+            flex-shrink: 1;
+        }
+        .brand-tagline {
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: linear-gradient(135deg, #00d084, #b3ffda);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .brand-tagline::before {
+            content: " | ";
+        }
+
+        nav {
+            display: flex;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+        nav a {
+            color: #f0faf7;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+            padding: 4px 2px;
+            white-space: nowrap;
+        }
+        nav a:hover, nav a:active {
+            color: #00d084;
+            border-bottom-color: #00d084;
+        }
+
+        /* 英雄区 - 艺术字靠右下 */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 500px;
+            background: linear-gradient(115deg, rgba(0,0,0,0.2) 0%, rgba(0,40,30,0.3) 100%),
+            url('风电光伏电站2.jpg') center/cover;
+            background-attachment: fixed;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .hero-art-text {
+            max-width: 70%;
+            margin: 0 6% 10% 0;
+            text-align: right;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            background: rgba(0, 25, 22, 0.55);
+            padding: 2rem 2.5rem;
+            border-radius: 36px;
+            border-right: 5px solid #00d084;
+            border-bottom: 2px solid rgba(0,208,132,0.5);
+            animation: fadeSlideUp 0.9s ease-out;
+        }
+
+        .hero-art-text h2 {
+            font-size: clamp(1.95rem, 5.25vw, 3.75rem);
+            font-weight: 800;
+            background: linear-gradient(130deg, #FFFFFF, #c3ffe6, #00d084);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.2);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.6rem;
+        }
+
+        .hero-art-text p {
+            font-size: clamp(0.75rem, 2.25vw, 1.05rem);
+            font-weight: 500;
+            color: #e2fef0;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(40px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+
+        .section {
+            padding: 5rem 6%;
+        }
+        .section-alt {
+            background: rgba(8, 22, 22, 0.2);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        h2.section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00d084;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2.section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: #00d084;
+            border-radius: 4px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ef720d, #b3ffda);
+            -webkit-background-clip: text;  /* 将背景裁剪成文字的形状（WebKit内核） */
+            background-clip: text;          /* 标准属性，将背景裁剪成文字的形状 */
+            color: transparent;             /* 让文字本身的颜色透明，以显示出背景渐变色 */
+        }
+
+
+        h3.section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00d084;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h3.section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: #00d084;
+            border-radius: 4px;
+        }
+
+        /* 四大板块 精致卡片 + 高清图背景 */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .business-card {
+            background: rgba(12, 32, 28, 0.2);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 32px;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            box-shadow: 0 12px 20px -8px rgba(0,0,0,0.4);
+            border: 1px solid #2b5a52;
+        }
+        .business-card:hover {
+            transform: translateY(-8px);
+            border-color: #00d084;
+            box-shadow: 0 24px 32px -12px rgba(0,208,132,0.2);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .business-card:hover .card-img {
+            transform: scale(1.02);
+        }
+        .card-content {
+            padding: 1.6rem 1.4rem 1.8rem;
+        }
+        .card-content h3 {
+            font-size: 1.6rem;
+            color: #00e094;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+        .card-content p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #cfede6;
+        }
+        .card-content p:first-of-type {
+            margin-bottom: 0.8rem;
+        }
+        .icon-tag {
+            font-size: 1.8rem;
+            color: #00d084;
+            margin-bottom: 10px;
+        }
+
+        .projects-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-between;
+            margin: 2rem 0;
+        }
+        .project-item {
+            flex: 1;
+            background: rgba(8, 22, 20, 0.45);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            padding: 1.8rem;
+            border-radius: 30px;
+            border-left: 5px solid #00d084;
+        }
+        .project-item p:last-of-type,
+        .serv-card p:last-of-type {
+            margin-top: 0.8rem;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 2rem;
+            background: rgba(6, 18, 18, 0.45);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            padding: 2rem;
+            border-radius: 48px;
+            margin-top: 2rem;
+        }
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #00d084;
+        }
+        .profile-rich {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background: rgba(6, 18, 16, 0.45);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 40px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+        .highlight {
+            color: #00d084;
+            font-weight: 600;
+        }
+        .contact-flex {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            background: rgba(8, 20, 18, 0.2);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 32px;
+            padding: 2rem;
+            overflow: hidden;
+        }
+        /* ===== 移动端适配 ===== */
+
+        /* iOS Safari 不支持 background-attachment: fixed */
+        @supports (-webkit-touch-callout: none) {
+            .hero {
+                background-attachment: scroll;
+            }
+        }
+        /* 极小屏 — 窄手机 (<400px) */
+        @media (max-width: 399px) {
+            header { padding: 0 3%; }
+            .logo-img { height: 36px; }
+            .brand-name { font-size: 0.75rem; letter-spacing: 0; }
+            .brand-tagline { font-size: 0.65rem; line-height: 1; }
+            nav { gap: 3px; justify-content: center; }
+            nav a { font-size: clamp(0.45rem, 2vw, 0.65rem); padding: 6px 3px; }
+            .hero { min-height: 420px; background-position: center 80%; }
+            .hero-art-text {
+                margin: 0 3% 10% 0;
+                width: fit-content;
+                max-width: 88%;
+                padding: 0.7rem 1rem;
+                border-radius: 18px;
+            }
+            .hero-art-text h2 { font-size: 1.5rem; }
+            .hero-art-text p:last-child { display: none; }
+            .stats { gap: 1.2rem; padding: 1.2rem; }
+            .stat-number { font-size: 2rem; }
+            .contact-flex { flex-direction: column; padding: 1.2rem; }
+            .contact-flex > div:last-child {
+                border-left: none !important;
+                padding-left: 0 !important;
+                padding-top: 1rem;
+                border-top: 1px solid #2c5b52;
+            }
+            .cta-final .logo-img { height: 120px !important; }
+            h2.section-title { font-size: 1.5rem; }
+            h3.section-title { font-size: 1.3rem; }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background: #0a1a1a;
+            }
+            body::before {
+                background:
+                    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)),
+                    url('风电光伏电站2.jpg') left center / cover;
+            }
+            header {
+                padding: 0 4%;
+                flex-wrap: wrap;
+            }
+            .logo-img { height: 38px; }
+            .brand-name { font-size: 0.82rem; max-width: none; white-space: normal; overflow: visible; text-overflow: clip; }
+            .brand-text {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+                flex: 1;
+                min-width: 0;
+            }
+            .brand-tagline {
+                font-size: 0.72rem;
+                white-space: normal;
+                overflow: visible;
+                background: none;
+                color: #b0e0d0;
+                line-height: 1;
+            }
+            .brand-tagline::before { content: none; }
+            nav { gap: 4px; justify-content: center; flex-shrink: 1; width: 100%; }
+            nav a { font-size: clamp(0.5rem, 2.5vw, 0.72rem); padding: 6px 4px; }
+            .hero {
+                background: url('风电光伏电站2.jpg') center 80% / cover;
+                background-attachment: scroll;
+                min-height: 460px;
+            }
+            .hero-art-text {
+                margin: 0 4% 12% 0;
+                width: fit-content;
+                max-width: 80%;
+                padding: 0.9rem 1.1rem;
+                border-radius: 22px;
+            }
+            .hero-art-text h2 { font-size: 1.7rem; margin-bottom: 0.5rem; }
+            .hero-art-text p { font-size: 0.82rem; letter-spacing: 0.5px; }
+            .hero-art-text p:last-child { font-size: 0.75rem; }
+            .section { padding: 2.5rem 5%; }
+            .section-alt { background: rgba(8, 22, 22, 0.15); }
+            .business-card { background: rgba(12, 32, 28, 0.15); }
+            .contact-flex { background: rgba(8, 20, 18, 0.15); }
+            h2.section-title { font-size: 1.8rem; }
+            h3.section-title { font-size: 1.5rem; }
+            .grid-4 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+            .card-content { padding: 1.2rem 1rem 1.4rem; }
+            .card-content h3 { font-size: 1.3rem; }
+            .projects-showcase { flex-direction: column; gap: 1.2rem; }
+            .project-item { padding: 1.2rem; }
+            .stats { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; padding: 1.5rem; border-radius: 32px; }
+            .stat-number { font-size: 2.2rem; }
+            .profile-rich { flex-direction: column; padding: 1.2rem; border-radius: 28px; }
+            .about-bilingual { flex-direction: column; }
+            .about-cn, .about-en { min-width: 0; }
+            .contact-flex { flex-direction: column; padding: 1.2rem; border-radius: 24px; }
+            .contact-flex > div:last-child {
+                border-left: none !important;
+                padding-left: 0 !important;
+                padding-top: 1.2rem;
+                border-top: 1px solid #2c5b52;
+            }
+            .cta-final { margin: 3rem auto 0; }
+            .cta-final .logo-img { height: 140px !important; }
+            footer.site { margin-top: 3rem; padding: 2rem 1rem; }
+        }
+
+        /* 平板和小屏桌面 (769-1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero-art-text { max-width: 75%; margin: 0 6% 14% 0; }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .projects-showcase { gap: 1.2rem; }
+            .stats { gap: 1.2rem; }
+            .brand-name { font-size: 1.05rem; }
+            nav { gap: 18px; }
+        }
+
+        /* 大屏优化 (1025px+) */
+        @media (min-width: 1025px) {
+            .section { padding: 5rem 8%; }
+            .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+            /* 中英文双栏布局 */
+            .about-bilingual {
+                display: flex;
+                gap: 2rem;
+                align-items: stretch;
+                flex-wrap: wrap;
+            }
+
+            .about-cn {
+                flex: 1;
+                min-width: 280px;
+            }
+
+            .about-en {
+                flex: 2;
+                min-width: 350px;
+            }
+
+            /* 确保段落行高一致 */
+            .about-cn p,
+            .about-en p {
+                line-height: 1.6;
+                text-align: justify;
+                margin: 1rem 0;
+            }
+
+            /* 在移动端自动改为上下排列 */
+            @media (max-width: 768px) {
+                .about-bilingual {
+                    flex-direction: column;
+                }
+            }
+
+
+        /* CTA */
+        .cta-final {
+            text-align: center;
+            max-width: 70rem;
+            margin: 7rem auto 0;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+        .cta-final h2 { font-size: clamp(2.2rem, 5vw, 4rem); }
+        .cta-final h3 { font-size: clamp(1.6rem, 4vw, 3rem); }
+        .cta-final p { margin-top: 1.5rem; color: #cfede6; }
+        .cta-final .logo-img {
+            max-width: 90vw;
+            height: auto !important;
+            max-height: 200px;
+        }
+
+        /* Footer */
+        footer.site {
+            margin-top: 6rem;
+            border-top: 1px solid rgba(44, 91, 82, 0.4);
+            padding: 3rem 1rem 2rem;
+            text-align: center;
+            background: rgba(2, 10, 8, 0.55);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            color: #b0ccc6;
+            font-size: 0.875rem;
+        }
+        footer .brand { justify-content: center; margin-bottom: 1rem; }
+        footer .meta { font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.8; }
+
+        /* 社交图标 touch target 增大 */
+        .contact-flex a[target="_blank"] {
+            padding: 8px 8px 8px 0;
+            display: inline-block;
+        }
+
+        /* 联系方式内项目在手机上自动换行 */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .contact-item i {
+            flex-shrink: 0;
+        }
+        .contact-item .label {
+            font-size: 0.9rem;
+            min-width: 0;
+        }
+        .contact-item a,
+        .contact-item span {
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <!-- 替换为真实的 image.png 的公司logo (Base64 编码保证独立展示) -->
+        <img class="logo-img" src="New yellowfir Logo (WhiteText+blueTrunk) .png" alt="Yellowfir Group Official Logo">
+        <div class="brand-text">   
+            <span class="brand-name">Yellowfir Group</span>
+            <span class="brand-tagline">Green Energy · Investment · Consultant</span>
+        </div>
+    </div>
+    <nav>
+        <a href="#about"><i class="fas fa-leaf"></i> 关于 about</a>
+        <a href="#business"><i class="fas fa-solar-panel"></i> 业务 Business</a>
+        <a href="#projects"><i class="fas fa-charging-station"></i> 项目 Projects</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> 联系 Contact</a>
+    </nav>
+</header>
+
+<!-- HERO 艺术字靠下靠右 -->
+<section class="hero">
+    <div class="hero-art-text">
+        <h2>绿色能源，<br>点亮未来</h2>
+        <p>Green Energy, Lighting up the Future</p>
+        <p style="font-size: 1rem; margin-top: 12px;">Leading Renewable Energy Developer</p>
+    </div>
+</section>
+
+
+<section id="about" class="section">
+    <h2 class="section-title">About Yellowfir</h2>
+    
+    <!-- Logo 区域（可选，放在标题下方） -->
+    <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+        <img src="New yellowfir Logo (WhiteText+blueTrunk) .png" alt="Yellowfir Logo Emblem" style="width:100%; max-width:150px; border: none; padding: 0; background: transparent;">
+    </div>        
+    
+    <!-- 中英文双栏布局 -->
+    <div class="about-bilingual">
+        <!-- 中文栏 -->
+        <div class="about-cn">
+            <p><span class="highlight">Yellowfir Group Limited</span> 是一家注册在香港的综合性可再生能源服务公司（公司注册号：78751009），专注于新能源开发、投资及相关领域的整合服务。董事团队曾任职于中国内地大型国有电力央企核心战略投资岗位，拥有<span class="highlight">超过十年风电、光伏电站开发、投资、建设及运营</span>全链条实战经验。</p>
+            <p>公司以“绿色能源，点亮未来”为使命，通过技术创新与国际合作，为目标国家提供高效可持续的能源方案。目前核心布局中亚，深耕吉尔吉斯斯坦市场，与本地伙伴联合开发<span class="highlight">600MW光伏项目</span>，并规划<span class="highlight">2GW绿色能源+绿色农牧产业园</span>，年均可提供30亿度清洁电力，成为中亚绿色经济标杆。</p>
+            <br>
+            <p>核心竞争力：<strong>本地化运营</strong>（深度理解政策法规）、<strong>国际化合作</strong>（整合全球领先技术及资本）、<strong>专业顾问团队</strong>（涵盖投资架构、财税法律、项目全周期管理）。Yellowfir 致力于成为跨境可再生能源与综合咨询领域的引领者。</p>
+        </div>
+        
+        <!-- 英文栏 -->
+        <div class="about-en">
+            <p><span class="highlight">Yellowfir Group Limited</span> is a Hong Kong-registered comprehensive renewable energy service company (Company Registration No.: 78751009), specializing in new energy development, investment, and integrated services across related sectors. Its board members have previously held core strategic investment roles in major state-owned power enterprises in mainland China, bringing over a decade of hands-on experience across the entire value chain of <span class="highlight">wind and solar power development, investment, construction, and operation</span>.</p>
+            <p>Driven by the mission of "Green Energy, Powering a Bright Future," the company delivers efficient and sustainable energy solutions to target countries through technological innovation and international cooperation. With a strategic focus on Central Asia, Yellowfir has established a strong presence in the Kyrgyzstan market, co-developing a <span class="highlight">600MW solar PV project</span> in partnership with local stakeholders. The company is also planning a <span class="highlight">2GW green energy + green agriculture and animal husbandry industrial park</span>, capable of generating 3 billion kWh of clean electricity annually, positioning itself as a benchmark for green economy development in Central Asia.</p>
+            <p>Core Competitiveness: <strong>Localized operations</strong> (deep understanding of policies and regulations), <strong>international collaboration</strong> (integrating world-class technologies and capital), and <strong>expert advisory teams</strong> (covering investment structuring, tax, legal, and full project lifecycle management). Yellowfir is committed to becoming a leader in cross-border renewable energy and comprehensive consulting services.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 四大核心业务板块: 专门配对应高清图: 可再生能源开发 / 战略和投资 / 财税咨询 / 移民咨询 -->
+<section id="business" class="section section-alt">
+    <h2 class="section-title">核心专业板块  Core Professional Business</h2>
+    <div class="grid-4">
+        <!-- 1. 可再生能源开发 Renewable Energy-->
+        <div class="business-card">
+            <img class="card-img" src="风电光伏电站1.jpeg" alt="Renewable Energy Development">
+            <div class="card-content">
+                <div class="icon-tag"><i class="fas fa-solar-panel"></i></div>
+                <h3>可再生能源开发 Renewable Energy</h3>
+                <p style="text-align: justify;">太阳能、风能及储能项目规划、设计与建设。从资源评估、可研到EPC实施，推动区域能源绿色转型，助力净零排放目标。</p>
+                <p style="text-align: justify;">Solar, wind, and energy storage project planning, design, and construction. From resource assessment and feasibility studies to EPC implementation, driving regional energy transition and contributing to net-zero emission goals.</p>
+            </div>
+        </div>
+        <!-- 2. 战略和投资 -->
+        <div class="business-card">
+            <img class="card-img" src="战略投资.jpg" alt="战略与投资">
+            <div class="card-content">
+                <div class="icon-tag"><i class="fas fa-chart-line"></i></div>
+                <h3>战略和投资 Strategy & Investment</h3>
+                <p style="text-align: justify;">跨境投资架构设计、项目风险评估、融资方案、新能源绿地投资及并购顾问，为企业提供高价值战略增长路径。</p>
+                <p style="text-align: justify;">Cross-border investment structure design, project risk assessment, financing solutions, greenfield renewable energy investment, and M&A advisory, providing enterprises with high-value strategic growth paths.</p>
+            </div>
+        </div>
+        <!-- 3. 财税咨询 -->
+        <div class="business-card">
+            <img class="card-img" src="财税咨询.jpg" alt="财税咨询">
+            <div class="card-content">
+                <div class="icon-tag"><i class="fas fa-calculator"></i></div>
+                <h3>财税咨询 Financial and tax consulting</h3>
+                <p style="text-align: justify;">跨境税务筹划、国际财税架构、绿地项目财务模型、合规申报及长期财务规划，确保资金效率及稳健收益。</p>
+                <p style="text-align: justify;">Cross-border tax planning, international fiscal and tax structuring, financial modeling for greenfield projects, compliance filing, and long-term financial planning to ensure capital efficiency and stable returns.</p>
+            </div>
+        </div>
+        <!-- 4. 移民咨询（涉外身份规划配套） -->
+        <div class="business-card">
+            <img class="card-img" src="移民咨询.jpg" alt="移民与全球身份规划">
+            <div class="card-content">
+                <div class="icon-tag"><i class="fas fa-passport"></i></div>
+                <h3>移民咨询 Immigration consultation</h3>
+                <p style="text-align: justify;">全球身份规划、投资移民、海外安居及家族办公室配套服务，结合新能源产业投资提供定制化居留与公民身份方案。</p>
+                <p style="text-align: justify;">Global identity planning, investment immigration, overseas relocation, and family office support services, offering customized residency and citizenship solutions integrated with renewable energy industry investments.</p>
+            </div>
+        </div>
+    </div>
+    <p style="margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #bbdfd5;"><i class="fas fa-globe-asia"></i> 四大板块协同赋能，提供从绿色能源开发到跨境投资、财税及身份规划的一站式专业服务。</p>
+    <p style="margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #bbdfd5;"><i class="fas fa-globe-asia"></i> Four business divisions work in synergy to deliver one-stop professional services spanning green energy development, cross-border investment, tax and finance, and identity planning.</p>
+</section>
+
+<!-- 重点项目板块（突出吉国项目）-->
+<section id="projects" class="section">
+    <h2 class="section-title">标志性项目  Landmark Project</h2>
+    <div class="projects-showcase">
+        <div class="project-item">
+            <i class="fas fa-solar-panel" style="font-size: 2rem; color:#00d084;"></i>
+            <h3 style="margin: 12px 0;">巴特肯 600MW 光伏电站</h3>
+            <h3 style="margin: 12px 0;">Batken 600MW Photovoltaic Power Plant</h3>
+            <p style="text-align: justify;">吉尔吉斯斯坦 · 巴特肯州，已完成阶段性开发，年均可提供约9亿度清洁电力，助推区域能源独立与低碳转型。</p>
+            <p style="text-align: justify;">Batken Region, Kyrgyzstan · Phase development completed, capable of supplying approximately 900 million kWh of clean electricity annually, boosting regional energy independence and low-carbon transition.</p>
+        </div>
+        <div class="project-item">
+            <i class="fas fa-industry" style="font-size: 2rem; color:#00d084;"></i>
+            <h3 style="margin: 12px 0;">2GW 绿色能源+农牧产业园</h3>
+            <h3 style="margin: 12px 0;">2GW Green Energy + Agriculture and Animal Husbandry Industrial Park</h3>
+            <p style="text-align: justify;">总规划 2GW 风光储一体化 + 生态农业，预计年发电30亿度，构建绿色循环经济标杆，吸引国际绿色资本。</p>
+            <p style="text-align: justify;">With a total planned capacity of 2GW for integrated wind, solar, and energy storage plus eco-agriculture, the project is expected to generate 3 billion kWh of electricity annually, establishing a benchmark for green circular economy and attracting international green capital.</p>
+        </div>
+        <div class="project-item">
+            <i class="fas fa-charging-station" style="font-size: 2rem; color:#00d084;"></i>
+            <h3 style="margin: 12px 0;">中亚跨境新能源枢纽</h3>
+            <h3 style="margin: 12px 0;">Central Asia Cross-border New Energy Hub</h3>
+            <p style="text-align: justify;">联合国际机构开发储能及智能微网，配套战略投资框架，服务一带一路新能源走廊。</p>
+            <p style="text-align: justify;">Collaborating with international institutions to develop energy storage and smart microgrids, supported by a strategic investment framework, serving the Belt and Road New Energy Corridor.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 影响力数据展示 -->
+<section class="section section-alt">
+    <h2 class="section-title">关键指标 & 影响力  Key Indicators & Impact</h2>
+    <div class="stats">
+        <div><span class="stat-number">2 GW+</span><br>规划容量<br>Planned Capacity</div>
+        <div><span class="stat-number">600 MW</span><br>成熟建设阶段<br>Active Construction Phase</div>
+        <div><span class="stat-number">30 亿 kWh</span><br>年绿色电力输出<br>Annual Green Power Output</div>
+        <div><span class="stat-number">10+ 年</span><br>行业顶尖经验<br>Industry-Leading Expertise</div>
+    </div>
+    <p style="text-align: center; margin-top: 2rem;">项目每年减少碳排放约200万吨，为中亚能源结构转型和可持续发展注入强劲动力。</p>
+    <p style="text-align: center; margin-top: 2rem;">The project reduces carbon emissions by approximately 2 million tons annually, injecting strong momentum into the energy structure transformation and sustainable development of Central Asia.</p>
+</section>
+
+<!-- 增值能力: 财税/战略/移民细化（突出综合服务优势）-->
+<section class="section">
+    <h2 class="section-title">专业服务优势  Professional Service Advantage</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 1.8rem; justify-content: space-between;">
+        <div class="serv-card" style="flex:1; background: rgba(10, 24, 22, 0.45); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); border-radius: 28px; padding: 1.5rem;">
+            <i class="fas fa-chart-pie" style="font-size: 2rem; color:#00d084;"></i>
+            <h3 style="margin: 1rem 0 0.5rem;">战略投资全案</h3>
+            <h3 style="margin: 1rem 0 0.5rem;">Strategic Investment Solutions</h3>
+            <p style="text-align: justify;">行业分析、交易架构、跨境并购及绿地投资风险管理，确保复杂交易高效落地。</p>
+            <p style="text-align: justify;">Industry analysis, transaction structuring, cross-border M&A, and greenfield investment risk management, ensuring efficient execution of complex deals.</p>
+        </div>
+        <div class="serv-card" style="flex:1; background: rgba(10, 24, 22, 0.45); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); border-radius: 28px; padding: 1.5rem;">
+            <i class="fas fa-file-invoice-dollar" style="font-size: 2rem; color:#00d084;"></i>
+            <h3 style="margin: 1rem 0 0.5rem;">国际财税筹划</h3>
+            <h3 style="margin: 1rem 0 0.5rem;">International Tax Planning</h3>
+            <p style="text-align: justify;">离岸架构、双边税收协定应用、转移定价及合规咨询，提升投资收益。</p>
+            <p style="text-align: justify;">Offshore structuring, application of bilateral tax treaties, transfer pricing, and compliance consulting to enhance investment returns.</p>
+        </div>
+        <div class="serv-card" style="flex:1; background: rgba(10, 24, 22, 0.45); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); border-radius: 28px; padding: 1.5rem;">
+            <i class="fas fa-globe" style="font-size: 2rem; color:#00d084;"></i>
+            <h3 style="margin: 1rem 0 0.5rem;">全球身份规划</h3>
+            <h3 style="margin: 1rem 0 0.5rem;">Global Identity Planning</h3>
+            <p style="text-align: justify;">移民、海外资产配置及家族办公室，实现国际化布局。</p>
+            <p style="text-align: justify;">Immigration, overseas asset allocation and family office, achieving internationalization.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-final">
+   <div class="brand">
+      <img class="logo-img" src="New yellowfir Logo (WhiteText+blueTrunk) .png" alt="Yellowfir Logo" style="height:200px"/>
+    </div>
+    <h2>一同<span class="italic text-gradient">点亮</span>下一个十年</h2>
+    <h3><span class="italic text-gradient">Lighting </span>The Next 10 Years Together</h3>
+    <p>无论您是寻求投资机会、跨境合作伙伴，还是希望布局绿色能源未来，Yellowfir 期待与您同行。<br/><em>Whether you seek investment opportunities, cross-border partners, or a place in the green-energy future, Yellowfir walks with you.</em></p>
+</section>
+
+
+<!-- 联系方式 -->
+<section id="contact" class="section section-alt">
+    <h2 class="section-title">联络 · Contact</h2>
+    <div class="contact-flex">
+        <div style="flex:1; min-width: 0;">
+            <div class="contact-item">
+                <i class="fas fa-globe" style="font-size: 1.4rem; color:#00d084;"></i>
+                <span class="label">Website:</span>
+                <a href="https://www.yellowfir.com" style="color: rgb(211, 222, 58);">www.yellowfir.com</a>
+            </div>
+            <div style="height: 12px;"></div>
+            <div class="contact-item">
+                <i class="fas fa-envelope" style="font-size: 1.4rem; color:#00d084;"></i>
+                <span class="label"><strong>yellowfir@yellowfir.com</strong></span>
+            </div>
+            <div style="height: 12px;"></div>
+            <div class="contact-item" style="align-items: flex-start;">
+                <i class="fas fa-map-marker-alt" style="font-size: 1.4rem; color:#00d084; margin-top: 2px;"></i>
+                <div>
+                    <strong>香港总部 · Hong Kong headquarters：</strong><br>
+                    Unit 421, 4/F, Beverley Commercial Center, No.87-105 Chatham Road South, Tsim Sha Tsui, Hong Kong
+                </div>
+            </div>
+        </div>
+        <div style="flex:1; min-width: 0; border-left: 1px solid #2c5b52; padding-left: 1.5rem;">
+            <div style="height: 4px;"></div>
+            <p style="word-break: break-word;"><strong>业务咨询 · Service Inquiries：</strong> yellowfir@yellowfir.com</p>
+            <div style="height: 16px;"></div>
+            <p style="word-break: break-word;"><strong>职业 · Career：</strong> yellowfir@yellowfir.com</p>
+            <div style="margin-top: 16px;">
+                <a href="https://xwindowscn.github.io/yellowfir/REmodel.html" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#00d084;color:#0a1a1a;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.85rem;transition:all .2s" onmouseover="this.style.background='#00e894'" onmouseout="this.style.background='#00d084'">🚀 Launch RE Financial Model</a>
+            </div>
+            <div style="margin-top: 20px;">
+                <a href="https://www.linkedin.com/in/yellowfir" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">
+                    <i class="fab fa-linkedin" style="font-size: 1.8rem; margin-right: 18px; cursor: pointer; opacity:0.8; color: #eef5f2;"></i>
+                </a>
+                <a href="https://twitter.com/xwindowscn" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">
+                    <i class="fab fa-twitter" style="font-size: 1.8rem; margin-right: 18px; cursor: pointer; opacity:0.8; color: #eef5f2;"></i>
+                </a>
+               <a href="https://wa.me/85262713196" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">
+                    <i class="fab fa-whatsapp" style="font-size: 1.8rem; margin-right: 18px; cursor: pointer; opacity:0.8; color: #eef5f2;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Book -->
+<section class="section" style="text-align:center;">
+    <h2 class="section-title" style="text-align:center;display:inline-block;">美国税务筹划手册<br>U.S. Tax Planning Handbook<br><small style="display:block;font-size:1rem;color:#b0c4b0;font-weight:400;margin-top:4px;">全面通达美国税务实务<br>Comprehensive Access to U.S. Tax Practice</small></h2>
+    <div style="margin-top:2rem;display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;align-items:flex-start;">
+        <a href="https://www.amazon.com/dp/B0H7HQ1MWG" target="_blank" rel="noopener noreferrer">
+            <img src="https://m.media-amazon.com/images/I/41pjT3CO0NL._SY500_.jpg" alt="美国税务筹划手册 U.S. Tax Planning Handbook" style="border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6);max-width:260px;height:auto;transition:transform .3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        </a>
+        <a href="https://www.amazon.com/dp/B0H7HQ1MWG" target="_blank" rel="noopener noreferrer">
+            <img src="https://m.media-amazon.com/images/I/61YJ2UP-a2L._SY500_.jpg" alt="美国税务筹划手册 U.S. Tax Planning Handbook Back Cover" style="border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6);max-width:260px;height:auto;transition:transform .3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        </a>
+    </div>
+    <p style="margin-top:1.5rem;color:#b0c4b0;font-size:0.95rem;">
+        <strong style="color:#eef5f2;">作者 Author：</strong> Jing Zhang, MBA
+        &nbsp;|&nbsp;
+        <strong style="color:#eef5f2;">ISBN：</strong> 979-8-18472-135-4
+    </p>
+    <p style="margin-top:0.8rem;">
+        <a href="https://www.amazon.com/dp/B0H7HQ1MWG" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#00d084;color:#0a1a1a;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;font-size:1rem;transition:all .2s;" onmouseover="this.style.background='#00e894'" onmouseout="this.style.background='#00d084'">
+            📖 查看详情 &middot; View on Amazon
+        </a>
+    </p>
+</section>
+
+
+<footer class="site">
+  <div class="container">
+    <div>
+        <div class="name">Yellow<span>fir</span> Group</div>
+        <div class="tag">Green Energy · Investment · Consultant</div>
+    </div>
+    <div>© <script>document.write(new Date().getFullYear())</script> Yellowfir Group Limited. All rights reserved.</div>
+    <div class="meta">Hong Kong · Company Reg. No. 78751009</div>
+  </div>
+</footer>
