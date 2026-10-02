@@ -1,15 +1,15 @@
-# Yellowfir Group Limited — 黃杉集團 網站
+# Astraroad Group Limited — Astraroad Group 網站
 
 ## 專案概述
 
-靜態 HTML 商業網站，雙語（中文 + 英文），展示黃杉集團的四大業務板塊。
+靜態 HTML 商業網站，雙語（中文 + 英文），展示Astraroad Group的四大業務板塊。
 
 ## 技術棧
 
 - 純 HTML + CSS（無框架、無 build 工具）
 - 字體：Inter + PingFang SC + Microsoft YaHei
 - 圖標：Font Awesome 6
-- 圖片：GitHub (`xwindowscn/yellowfir`) 遠端載入 + 本地 PNG/JPG
+- 圖片：GitHub (`xwindowscn/astraroad`) 遠端載入 + 本地 PNG/JPG
 - 配色：#0a1a1a (背景)、#00d084 (綠色強調)、#eef5f2 (文字)
 
 ## 網站架構
@@ -61,7 +61,7 @@
 ## CLI 工具
 
 - 本地預覽：`python3 -m http.server 8899`
-- GitHub Pages 部署：推送到 `xwindowscn/yellowfir` 的 `main` 分支
+- GitHub Pages 部署：推送到 `xwindowscn/astraroad` 的 `main` 分支
 
 ## 常用斜線命令
 
