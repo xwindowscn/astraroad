@@ -1245,7 +1245,7 @@
                     <div class="field"><label>充放效率 <span class="en">Efficiency</span></label><input type="number" id="p_storageEfficiency" value="85" step="0.5"><span class="unit">%</span></div>
                     <div class="field"><label>容量租赁比例 <span class="en">Lease Ratio</span></label><input type="number" id="p_storageLeaseRatio" value="85" step="0.5"><span class="unit">%</span></div>
                     <div class="field"><label>储能租赁价格 <span class="en">Storage Lease Price</span></label><input type="number" id="p_storageLeasePrice" value="0" step="0.1"><span class="unit">CNY/Wh</span></div>
-                    <div class="field"><label>电芯更换次数 <span class="en">Replace Times</span></label><input type="number" id="p_batteryReplaceTimes" value="1.458333" step="0.01"><span class="unit">次</span></div>
+                    <div class="field"><label>电芯更换次数 <span class="en">Replace Times</span></label><input type="number" id="p_batteryReplaceTimes" value="0.458" step="0.01"><span class="unit">次</span></div>
                     <div class="field"><label>更换成本(CNY/Wh) <span class="en">Replace Cost</span></label><input type="number" id="p_replaceCost" value="0.25" step="0.01"><span class="unit">CNY/Wh</span></div>
                     <div class="grid-4col">
                         <div class="field"><label>储能运维人数/100MWh <span class="en">Storage Staff/100MWh</span></label><input type="number" id="p_storageStaff100" value="10" step="1"><span class="unit">人</span></div>
@@ -2162,7 +2162,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             let R = 0;
             e.storageDuration > 0 && v > 0 && (R = y * b / Math.pow(1 + l, w) + y * Math.max(0, b - 1) / Math.pow(1 + l, e.operPeriod));
             const z = document.getElementById("p_batteryReplaceTimes");
-            z && (z.value = v.toFixed(3));
+            z && (z.value = Math.max(0, v - 1).toFixed(3));
             const C = m + R,
                 _ = e.storageMgmtRate || .029,
                 I = C > 0 ? C / (1 + _) : 0,

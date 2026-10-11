@@ -1669,7 +1669,7 @@
             let R = 0;
             e.storageDuration > 0 && v > 0 && (R = y * b / Math.pow(1 + l, w) + y * Math.max(0, b - 1) / Math.pow(1 + l, e.operPeriod));
             const z = document.getElementById("p_batteryReplaceTimes");
-            z && (z.value = v.toFixed(3));
+            z && (z.value = Math.max(0, v - 1).toFixed(3));
             const C = m + R,
                 _ = e.storageMgmtRate || .029,
                 I = C > 0 ? C / (1 + _) : 0,
