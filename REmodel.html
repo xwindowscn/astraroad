@@ -2160,7 +2160,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 v = w > 0 && w < 999 ? e.operPeriod / w : 0,
                 b = Math.floor(v);
             let R = 0;
-            e.storageDuration > 0 && v > 0 && (R = y * b / Math.pow(1 + l, w) + y * Math.max(0, b - 1) / Math.pow(1 + l, e.operPeriod));
+            if (e.storageDuration > 0 && b > 0) for (let k = 1; k <= b; k++) R += y / Math.pow(1 + l, k * w);
             const z = document.getElementById("p_batteryReplaceTimes");
             z && (z.value = Math.max(0, v - 1).toFixed(3));
             const C = m + R,
