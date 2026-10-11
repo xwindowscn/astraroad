@@ -2158,7 +2158,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 x = e.storageUsableHours,
                 w = h > 0 && x > 0 ? x / h : 999,
                 v = w > 0 && w < 999 ? e.operPeriod / w : 0,
-                b = Math.floor(v);
+                b = Math.floor(v) - 1;
             let R = 0;
             if (e.storageDuration > 0 && b > 0) for (let k = 1; k <= b; k++) R += y / Math.pow(1 + l, k * w);
             const z = document.getElementById("p_batteryReplaceTimes");
