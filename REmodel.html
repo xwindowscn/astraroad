@@ -1439,7 +1439,7 @@
                     <div style="grid-column:1/-1;font-size:0.62rem;color:#7a9aaa;line-height:1.3;margin-top:-1px" id="waccCcyHint">折现率币种须与现金流币种一致；本项目现金流为人民币 ⇒ 默认取人民币套 WACC，美元套列对照。</div>
                     <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:4px">
                         <div class="wacc-f wacc-card"><label>国别违约利差</label><span class="wacc-box"><input type="number" id="p_countryDefSpread" value="5.52" step="0.01" readonly title="随国别自动取数（Damodaran ctryprem），不可手改"><span class="unit">%</span></span></div>
-                        <div class="wacc-f wacc-card"><label>信用利差</label><span class="wacc-box"><input type="number" id="p_creditSpread" value="1" step="0.05" readonly title="由模型 DSCR(min) 按底稿三档规则派生，不可手改"><span class="unit">%</span></span></div>
+                        <div class="wacc-f wacc-card"><label>信用利差</label><span class="wacc-box"><input type="number" id="p_creditSpread" value="1" step="0.05" readonly title="由模型 DSCR(min) 档 + 国别类别派生，不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>r<sub>RF</sub> 美元10Y</label><span class="wacc-box"><input type="number" id="p_riskFreeRate" value="5.24" step="0.1" readonly title="联网取数（FRED DGS10 美元10Y），不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>r<sub>RF</sub> 人民币10Y</label><span class="wacc-box"><input type="number" id="p_riskFreeRateCny" value="1.679" step="0.01" readonly title="人民币10Y 无风险利率（中债/CCDC 快照），不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>β<sub>u</sub>（随行业）</label><span class="wacc-box"><input type="number" id="p_betaU" value="0.55" step="0.01" readonly title="随行业自动取数（Damodaran BetasGlobal），不可手改"><span class="unit">&nbsp;</span></span></div>
@@ -1500,13 +1500,13 @@
                     </div>
                     <div class="field" style="background:#f7fbfd;border-radius:4px;padding:6px 8px;border:1px solid #cde0ea">
                         <div style="font-size:0.68rem;color:#3a5a6a;line-height:1.5">
-                            <div style="font-weight:700;color:#2e6a9a;margin-bottom:3px">📐 信用利差 · 按模型 DSCR(min) 派生 <span class="en" style="font-weight:400">Credit Spread derived from DSCR(min)</span>｜<span style="font-weight:400;color:#5a7a6a;font-size:0.64rem" id="waccDscrNow">—</span></div>
+                            <div style="font-weight:700;color:#2e6a9a;margin-bottom:3px">📐 信用利差 · DSCR(min) 档 ＋ 国别类别派生 <span class="en" style="font-weight:400">Credit Spread = DSCR band + country-class premium</span>｜<span style="font-weight:400;color:#5a7a6a;font-size:0.64rem" id="waccDscrNow">—</span></div>
                             <table style="width:100%;border-collapse:collapse;font-size:0.66rem;table-layout:fixed">
                                 <colgroup><col style="width:44%"><col style="width:30%"><col style="width:26%"></colgroup>
-                                <thead><tr><th style="text-align:left;padding:2px 4px;color:#2e6a9a;font-weight:700;border-bottom:1px solid #cde0ea">DSCR<sub>min</sub> 区间</th><th style="text-align:right;padding:2px 4px;color:#2e6a9a;font-weight:700;border-bottom:1px solid #cde0ea">信用利差区间</th><th style="text-align:right;padding:2px 4px;color:#2e6a9a;font-weight:700;border-bottom:1px solid #cde0ea">取中值</th></tr></thead>
+                                <thead><tr><th style="text-align:left;padding:2px 4px;color:#2e6a9a;font-weight:700;border-bottom:1px solid #cde0ea">DSCR<sub>min</sub> 区间</th><th style="text-align:right;padding:2px 4px;color:#2e6a9a;font-weight:700;border-bottom:1px solid #cde0ea">基准区间</th><th style="text-align:right;padding:2px 4px;color:#2e6a9a;font-weight:700;border-bottom:1px solid #cde0ea">信用利差</th></tr></thead>
                                 <tbody id="waccDscrBandBody"></tbody>
                             </table>
-                            <div style="font-size:0.6rem;color:#8a9aaa;margin-top:3px;line-height:1.35">各档按区间取中值；本档由模型自身经营现金流 DSCR 派生，<b>不可手改</b>。 <span class="en" style="font-weight:400">Midpoint of each band; derived live from the model's own DSCR.</span></div>
+                            <div style="font-size:0.6rem;color:#8a9aaa;margin-top:3px;line-height:1.35">各档按区间取中值，再加<b>国别类别加成</b>（投资级 +0.0%／投机级 +1.0%／前沿 +2.0%，由主权评级定档）；本档由模型自身经营现金流 DSCR 派生，<b>不可手改</b>。 <span class="en" style="font-weight:400">Band midpoint + country-class premium (IG 0.0 / HY +1.0 / Frontier +2.0), set by sovereign rating; derived live from the model's own DSCR.</span></div>
                         </div>
                     </div>
                     </div>
@@ -1793,40 +1793,56 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             const ccy=document.getElementById("p_waccCcy")?document.getElementById("p_waccCcy").value:"CNY";
             el.textContent="取数：Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+" · 折现币种 "+(ccy==="USD"?"美元 USD":"人民币 RMB")+dscrSuffix();
         }
-        // 信用利差：由模型自身 DSCR(min) 按底稿 I-202609-009 三档规则派生（不手改）
+        // 国别类别：按主权评级分三档，决定"相对主权项目溢价"的整体水平（不手改）
+        //   投资级(Baa3+)→加成 0.0%；投机级(Ba1–B2)→+1.0%；前沿(B3 及以下、NR)→+2.0%
+        //   —— 国别的【绝对】风险已由左侧「国别违约利差」(ds) 承担，此处只体现"同类项目
+        //      在不同市场类别下相对主权溢价的差异"，避免重复计价。
+        function countrySpreadClass(){
+            const cs=document.getElementById("p_country"), c=cs?COUNTRY_DB[cs.value]:null, r=c?String(c.rating||""):"";
+            if(!r||r==="NR") return "frontier";
+            if(["Aaa","Aa1","Aa2","Aa3","A1","A2","A3","Baa1","Baa2","Baa3"].indexOf(r)>=0) return "ig";
+            if(["Ba1","Ba2","Ba3","B1","B2"].indexOf(r)>=0) return "hy";
+            return "frontier";
+        }
+        function countryClassAdder(){ const k=countrySpreadClass(); return k==="ig"?0.0:(k==="hy"?1.0:2.0); }
+        function countryClassLabel(){ const k=countrySpreadClass(); return k==="ig"?"投资级":(k==="hy"?"投机级":"前沿"); }
+        // 信用利差 = 项目质量(DSCR 档) + 国别类别加成（不手改）
+        //   DSCR 档（基准）：≥1.75→0.75%；1.25–1.75→2.25%；<1.25→5.0%；无 DSCR→1.0%
         function derivedCreditSpread(dscrMin){
-            if(!(dscrMin>0)) return 1.0;    // 无 DSCR 数据：回落小额溢价
-            if(dscrMin>=1.75) return 0.75;  // 结构优良：相对主权利差 0–1.5%，取中值
-            if(dscrMin>=1.25) return 2.25;  // 结构一般：1.5–3.0%，取中值
-            return 5.0;                     // 结构弱：4–6%，取中值
+            const base = !(dscrMin>0) ? 1.0
+                       : dscrMin>=1.75 ? 0.75
+                       : dscrMin>=1.25 ? 2.25
+                       : 5.0;
+            return base + countryClassAdder();
         }
         function dscrSuffix(){
             const a=parseFloat(window._dscrMin||0), b=parseFloat(window._dscrAvg||0);
-            return a>0 ? " · 信用利差按 DSCR min/avg "+a.toFixed(3)+" / "+b.toFixed(3)+" 派生" : "";
+            return a>0 ? " · 信用利差按 DSCR min/avg "+a.toFixed(3)+" / "+b.toFixed(3)+" ＋国别类别 "+countryClassLabel()+" 派生" : "";
         }
         // 三档表：把派生规则显式列在面板中，高亮当前所处档
         function renderDscrBands(){
             const mon=parseFloat(window._dscrMin||0), mag=parseFloat(window._dscrAvg||0);
+            const add=countryClassAdder(), cls=countryClassLabel();
             const now=document.getElementById("waccDscrNow");
             if(now) now.textContent = mon>0
-                ? "当前模型 DSCR min / avg = "+mon.toFixed(3)+" / "+mag.toFixed(3)+"，所处档派生信用利差 "+derivedCreditSpread(mon).toFixed(2)+"%"
-                : "当前无 DSCR 数据，回落 1.00%";
+                ? "当前模型 DSCR min / avg = "+mon.toFixed(3)+" / "+mag.toFixed(3)+"，国别类别 "+cls+"（+ "+add.toFixed(2)+"%），派生信用利差 "+derivedCreditSpread(mon).toFixed(2)+"%"
+                : "当前无 DSCR 数据，基准回落 1.00% ＋ 国别类别 "+cls+"（+ "+add.toFixed(2)+"%）= "+(1.0+add).toFixed(2)+"%";
             const tb=document.getElementById("waccDscrBandBody"); if(!tb) return;
-            const rows=[["≥ 1.75（结构优良）","0–1.5%","0.75%"],["1.25 – 1.75（结构一般）","1.5–3.0%","2.25%"],["< 1.25（结构弱）","4–6%","5.00%"]];
+            const rows=[["≥ 1.75（结构优良）","0–1.5%",0.75],["1.25 – 1.75（结构一般）","1.5–3.0%",2.25],["< 1.25（结构弱）","4–6%",5.0]];
             const act = mon>0 ? (mon>=1.75?0:(mon>=1.25?1:2)) : -1;
             tb.innerHTML = rows.map(function(r,i){
                 const on=i===act, c=on?"#0d7c3f":"#5a7a8a", fw=on?"700":"400";
                 const bg=on?"background:#e3f2e8;":"";
                 const dot=on?'<span style="color:#0d7c3f">● </span>':'';
                 const cell=function(t,al,f){return '<td style="text-align:'+al+';padding:1px 4px;color:'+c+';font-weight:'+fw+'">'+f+t+'</td>';};
-                return '<tr style="'+bg+'border-bottom:1px solid #eef4f8">'+cell(r[0],"left",dot)+cell(r[1],"right","")+cell(r[2]+(on?" ★":""),"right","")+'</tr>';
+                return '<tr style="'+bg+'border-bottom:1px solid #eef4f8">'+cell(r[0],"left",dot)+cell(r[1],"right","")+cell((r[2]+add).toFixed(2)+"%"+(on?" ★":""),"right","")+'</tr>';
             }).join("");
         }
         function syncCreditSpread(){
             renderDscrBands();
             const el=document.getElementById("p_creditSpread"); if(!el) return false;
             const mon=parseFloat(window._dscrMin||0), mag=parseFloat(window._dscrAvg||0), v=derivedCreditSpread(mon);
-            el.title="由模型 DSCR(min) 按底稿三档规则派生，不可手改"+(mon>0?"（DSCR min/avg = "+mon.toFixed(3)+" / "+mag.toFixed(3)+"）":"");
+            el.title="由模型 DSCR(min) 档 + 国别类别（"+countryClassLabel()+"）派生，不可手改"+(mon>0?"（DSCR min/avg = "+mon.toFixed(3)+" / "+mag.toFixed(3)+"）":"");
             if(Math.abs(parseFloat(el.value)-v)>1e-9){ el.value=v; return true; }
             return false;
         }
