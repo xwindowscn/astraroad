@@ -1413,7 +1413,7 @@
                             <div><b>再杠杆:</b> β<sub>L</sub> = β<sub>u</sub> × [1 + (1 − T<sub>c</sub>) × D/E]</div>
                             <div><b>权益端(CAPM·新兴市场):</b> R<sub>e</sub> = r<sub>RF</sub> + β<sub>L</sub> × ERP + CRP　<span style="color:#5a7a8a">（CRP 始终计入权益端）</span></div>
                             <div><b>负债端·计入国别风险:</b> R<sub>d</sub> = r<sub>RF</sub> + 国别违约利差 + 信用利差</div>
-                            <div><b>负债端·不计入国别风险:</b> R<sub>d</sub> = 本所既定融资成本（手填，不含国别风险）</div>
+                            <div><b>负债端·投资人指定:</b> R<sub>d</sub> = 投资人指定债务成本（手填；可直接考虑国别分析）</div>
                             <div><b>WACC:</b> WACC = (E/V) × R<sub>e</sub> + (D/V) × R<sub>d</sub> × (1 − T<sub>c</sub>)</div>
                             <div style="margin-top:2px;color:#5a7a8a"> β<sub>u</sub> = <span class="en">Unlevered Beta</span> · β<sub>L</sub> = <span class="en">Levered Beta</span> · ERP = <span class="en">Equity Risk Premium</span> · CRP = <span class="en">Country Risk Premium</span> · 黄底＝可输入，灰底＝联网取数/公式推导（不可手改）</div>
                         </div>
@@ -1429,10 +1429,10 @@
                                 <option value="USD">美元 USD（10Y）</option>
                             </select>
                         </div>
-                        <div class="wacc-f wacc-sel wacc-card"><label>负债端是否计入国别风险</label>
+                        <div class="wacc-f wacc-sel wacc-card"><label>R<sub>d</sub> 的确定方式</label>
                             <select id="p_debtCountryRisk" onchange="if(typeof calcAll==='function')calcAll();">
                                 <option value="1" selected>是（合成评级法：R<sub>d</sub>=r<sub>RF</sub>+国别违约利差+信用利差）</option>
-                                <option value="0">否（仅权益端计入 CRP）</option>
+                                <option value="0">否（投资人指定）</option>
                             </select>
                         </div>
                     </div>
@@ -1445,7 +1445,7 @@
                         <div class="wacc-f wacc-card"><label>β<sub>u</sub>（随行业）</label><span class="wacc-box"><input type="number" id="p_betaU" value="0.55" step="0.01" readonly title="随行业自动取数（Damodaran BetasGlobal），不可手改"><span class="unit">&nbsp;</span></span></div>
                         <div class="wacc-f wacc-card"><label>ERP</label><span class="wacc-box"><input type="number" id="p_erp" value="4.23" step="0.5" readonly title="成熟市场 ERP（Damodaran ctryprem 反推），自动取数，不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>CRP</label><span class="wacc-box"><input type="number" id="p_crp" value="8.41" step="0.1" readonly title="随国别自动取数（Damodaran ctryprem），不可手改"><span class="unit">%</span></span></div>
-                        <div class="wacc-f wacc-card"><label>融资成本 R<sub>d</sub></label><span class="wacc-box"><input type="number" id="p_waccRd" value="4.5" step="0.1" title="本所既定融资成本，仅负债端不计国别风险时使用，可手改"><span class="unit">%</span></span></div>
+                        <div class="wacc-f wacc-card"><label>投资人指定 R<sub>d</sub></label><span class="wacc-box"><input type="number" id="p_waccRd" value="4.5" step="0.1" onchange="if(typeof calcAll==='function')calcAll()" oninput="if(typeof calcAll==='function')calcAll()" title="投资人指定债务成本（可直接考虑国别分析），仅在「R_d 的确定方式」选『否』时生效，可手改"><span class="unit" id="p_waccRdUnit">%</span><span class="unit" id="p_waccRdDash" style="display:none;color:#9aabb5">—</span></span></div>
                     </div>
                     <div style="grid-column:1/-1;background:#f5f8fb;border-radius:4px;padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px">
                         <div style="font-size:0.66rem;color:#5a7a8a;line-height:1.35" id="waccDataSource">取数：Damodaran ctryprem / BetasGlobal</div>
@@ -1481,6 +1481,13 @@
                             <div style="font-size:0.62rem;color:#5a7a8a">WACC <span class="en">加权平均资本成本</span></div>
                             <div style="font-size:1rem;color:#0d7c3f;font-weight:700" id="waccDisplay">计算中...</div>
                         </div>
+                    </div>
+                    <div style="grid-column:1/-1;background:#fffdf5;border:1px solid #e8ddb8;border-radius:4px;padding:5px 9px;font-size:0.64rem;color:#6a5a2a;line-height:1.6">
+                        <div style="font-weight:700;color:#8a6d1a;margin-bottom:2px">🧮 计算链显形 <span class="en" style="font-weight:400">Term-by-term build-up</span></div>
+                        <div id="waccRdBuild">—</div>
+                        <div id="waccRdContrib">—</div>
+                        <div id="waccBreak">—</div>
+                        <div id="waccAlt" style="color:#8a6d1a">—</div>
                     </div>
                     <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:4px;align-items:start">
                     <div class="field" style="background:#fffdf5;border-radius:4px;padding:6px 8px;border:1px solid #e8ddb8">
@@ -2148,7 +2155,31 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 c = 1 - e.equityRatio,
                 p = e.incomeTax,
                 d = e => document.getElementById(e);
-            d("waccDisplay") && (d("waccDisplay").textContent = (100 * l).toFixed(2) + "%"), d("waccBlDisplay") && (d("waccBlDisplay").textContent = waccBetaL.toFixed(2)), d("waccReDisplay") && (d("waccReDisplay").textContent = (100 * o).toFixed(2) + "%"), d("waccRdDisplay") && (d("waccRdDisplay").textContent = (100 * r).toFixed(2) + "% → " + (100 * r * (1 - p)).toFixed(2) + "%"), d("waccRdMode") && (d("waccRdMode").textContent = e.debtCountryRisk ? "计入国别风险（合成评级法）" : "不计入国别风险（本所既定）"), d("waccEvDisplay") && (d("waccEvDisplay").textContent = (100 * i).toFixed(0) + "%"), d("waccDvDisplay") && (d("waccDvDisplay").textContent = (100 * c).toFixed(0) + "%"), d("waccTcDisplay") && (d("waccTcDisplay").textContent = (100 * p).toFixed(0) + "%"),
+            d("waccDisplay") && (d("waccDisplay").textContent = (100 * l).toFixed(2) + "%"), d("waccBlDisplay") && (d("waccBlDisplay").textContent = waccBetaL.toFixed(2)), d("waccReDisplay") && (d("waccReDisplay").textContent = (100 * o).toFixed(2) + "%"), d("waccRdDisplay") && (d("waccRdDisplay").textContent = (100 * r).toFixed(2) + "% → " + (100 * r * (1 - p)).toFixed(2) + "%"), d("waccRdMode") && (d("waccRdMode").textContent = e.debtCountryRisk ? "计入国别风险（合成评级法）" : "投资人指定（模型不另加载国别利差）"), d("waccEvDisplay") && (d("waccEvDisplay").textContent = (100 * i).toFixed(0) + "%"), d("waccDvDisplay") && (d("waccDvDisplay").textContent = (100 * c).toFixed(0) + "%"), d("waccTcDisplay") && (d("waccTcDisplay").textContent = (100 * p).toFixed(0) + "%"),
+                d("waccRdBuild") && (d("waccRdBuild").textContent = e.debtCountryRisk
+                    ? "R_d ＝ r_RF " + (100 * e.riskFreeRate).toFixed(3) + "%  ＋  国别违约利差 " + (100 * e.countryDefSpread).toFixed(2) + "%  ＋  信用利差 " + (100 * e.creditSpread).toFixed(2) + "%  ＝  " + (100 * r).toFixed(2) + "% （税前；税后 " + (100 * r * (1 - p)).toFixed(2) + "%）"
+                    : "R_d ＝ 投资人指定债务成本 " + (100 * r).toFixed(2) + "%  （可手改，含税后 " + (100 * r * (1 - p)).toFixed(2) + "%；模型不另加载国别利差）"),
+                d("waccRdContrib") && (d("waccRdContrib").textContent = e.debtCountryRisk
+                    ? "国别风险对 WACC 的贡献 ＝ (D/V)(1−Tc) × ds ＝ " + (100 * c * (1 - p)).toFixed(0) + "% × " + (100 * e.countryDefSpread).toFixed(2) + "% ＝ ＋" + (100 * c * (1 - p) * e.countryDefSpread).toFixed(2) + "pp"
+                    : "R_d 为投资人指定（模型不另加载国别利差）；国别风险仅在权益端体现（CRP " + (100 * e.crp).toFixed(2) + "%）⇒ 负债端贡献 ＝ 0"),
+                d("waccBreak") && (d("waccBreak").textContent = "WACC ＝ (E/V)·R_e ＋ (D/V)(1−Tc)·R_d ＝ " + (100 * i).toFixed(0) + "% × " + (100 * o).toFixed(2) + "%  ＋  " + (100 * c * (1 - p)).toFixed(0) + "% × " + (100 * r).toFixed(2) + "%  ＝  " + (100 * l).toFixed(2) + "%"),
+                d("waccAlt") && (function() {
+                    const altRd = e.debtCountryRisk ? e.waccRd : (e.riskFreeRate + e.countryDefSpread + e.creditSpread),
+                        altW = i * o + c * altRd * (1 - p);
+                    d("waccAlt").textContent = "对比 · 另一口径（" + (e.debtCountryRisk ? "否：投资人指定 R_d" : "是：负债端计入国别风险") + "）"
+                        + "⇒ R_d " + (100 * altRd).toFixed(2) + "% ⇒ WACC " + (100 * altW).toFixed(2) + "%"
+                        + "（" + (altW > l ? "高于" : altW < l ? "低于" : "等于") + "当前 " + (100 * Math.abs(l - altW)).toFixed(2) + "pp）";
+                })(),
+                (function() {
+                    const rd = d("p_waccRd"), dv = d("p_waccRdDash"), un = d("p_waccRdUnit");
+                    if (rd) {
+                        const on = !!e.debtCountryRisk;
+                        rd.style.display = on ? "none" : "";
+                        rd.disabled = on;
+                        un && (un.style.display = on ? "none" : "");
+                        dv && (dv.style.display = on ? "" : "none");
+                    }
+                })(),
                 function() {
                     const usd = e.waccCcy === "USD",
                         rfOth = usd ? e.riskFreeRateCny : e.riskFreeRateUsd,
