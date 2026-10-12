@@ -1258,6 +1258,10 @@
                         <div class="field"><label>储能自维维修费(质保期外) <span class="en">Stor Self Repair (post Warr.)</span></label><input type="number" id="p_storageSelfRepOut" value="0" step="0.5"><span class="unit">CNY/MWh</span></div>
                         <div class="field"><label>储能外委维修费(质保期内) <span class="en">Stor Outsource Repair (in Warr.)</span></label><input type="number" id="p_storageOutsourceRepIn" value="0" step="0.5"><span class="unit">CNY/MWh</span></div>
                         <div class="field"><label>储能外委维修费(质保期外) <span class="en">Stor Outsource Repair (post Warr.)</span></label><input type="number" id="p_storageOutsourceRepOut" value="0" step="0.5"><span class="unit">CNY/MWh</span></div>
+                        <div class="field"><label>储能自维其他费(质保期内) <span class="en">Stor Self Other (in Warr.)</span></label><input type="number" id="p_storageSelfOtherIn" value="15" step="0.5"><span class="unit">CNY/kW</span></div>
+                        <div class="field"><label>储能自维其他费(质保期外) <span class="en">Stor Self Other (post Warr.)</span></label><input type="number" id="p_storageSelfOtherOut" value="28" step="0.5"><span class="unit">CNY/kW</span></div>
+                        <div class="field"><label>储能外委其他费(质保期内) <span class="en">Stor Outsource Other (in Warr.)</span></label><input type="number" id="p_storageOutsourceOtherIn" value="30" step="0.5"><span class="unit">CNY/kW</span></div>
+                        <div class="field"><label>储能外委其他费(质保期外) <span class="en">Stor Outsource Other (post Warr.)</span></label><input type="number" id="p_storageOutsourceOtherOut" value="50" step="0.5"><span class="unit">CNY/kW</span></div>
                     </div>
                     <div class="computed-3col">
                         <div class="field computed"><label>储能容量 <span class="en">Storage Capacity</span></label><span class="disp-value" id="cv_storageMwh">计算中...</span><span class="unit">MWh</span></div>
@@ -2073,6 +2077,10 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 storageOutsourceMatOut: e("p_storageOutsourceMatOut"),
                 storageOutsourceRepIn: e("p_storageOutsourceRepIn"),
                 storageOutsourceRepOut: e("p_storageOutsourceRepOut"),
+                storageSelfOtherIn: e("p_storageSelfOtherIn"),
+                storageSelfOtherOut: e("p_storageSelfOtherOut"),
+                storageOutsourceOtherIn: e("p_storageOutsourceOtherIn"),
+                storageOutsourceOtherOut: e("p_storageOutsourceOtherOut"),
                 landArea: e("p_landArea"),
                 annualRent: e("p_annualRent"),
                 exchangeRate: e("p_exchangeRate"),
@@ -2442,7 +2450,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                         s = n <= e.warrantyYears ? e.storageOutsourceRepIn : e.storageOutsourceRepOut;
                     Se[a] += (t + s) * Ee / 1e4
                 }
-                Fe[a] = o + r + l + i + c + d, Ff[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.selfOtherIn : e.selfOtherOut : n <= e.warrantyYears ? e.outsourceOtherIn : e.outsourceOtherOut) * e.dcCap
+                Fe[a] = o + r + l + i + c + d, Ff[a] = 2 === e.costMethod ? 0 : ((1 === e.omMode ? n <= e.warrantyYears ? e.selfOtherIn : e.selfOtherOut : n <= e.warrantyYears ? e.outsourceOtherIn : e.outsourceOtherOut) + (1 === e.omMode ? n <= e.warrantyYears ? e.storageSelfOtherIn : e.storageSelfOtherOut : n <= e.warrantyYears ? e.storageOutsourceOtherIn : e.storageOutsourceOtherOut) * e.storageRatio) * e.dcCap
             }
             let Le = s(),
                 Oe = s(),
