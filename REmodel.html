@@ -2498,7 +2498,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 const p = te[a] + ae[a] - He[a] - qe[a];
                 Ne[a] = p, je[a] = p + Oe[a], Ve[a] = je[a] + H[a] + Ce[a], Xe[a] = p;
                 let d = 0;
-                d = e.taxHoliday ? n <= 3 ? 0 : n <= 6 ? Math.max(0, p) * e.incomeTax * .5 : Math.max(0, p) * e.incomeTax : n <= e.taxPreferenceYears ? 0 : Math.max(0, p) * e.incomeTax, Ye[a] = d, De[a] = p - d
+                d = e.taxPreferenceYears > 0 ? n <= e.taxPreferenceYears ? 0 : Math.max(0, p) * e.incomeTax : e.taxHoliday ? n <= 3 ? 0 : n <= 6 ? Math.max(0, p) * e.incomeTax * .5 : Math.max(0, p) * e.incomeTax : Math.max(0, p) * e.incomeTax, Ye[a] = d, De[a] = p - d
             }
             let at = s(),
                 nt = s(),
@@ -2512,7 +2512,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 const n = a - t + 1,
                     s = te[a] + ae[a] - Fe[a] - Se[a] - Ff[a] - H[a] - He[a];
                 let o = 0;
-                o = e.taxHoliday ? n <= 3 ? 0 : n <= 6 ? Math.max(0, s) * e.incomeTax * .5 : Math.max(0, s) * e.incomeTax : n <= e.taxPreferenceYears ? 0 : Math.max(0, s) * e.incomeTax, ot[a] = o
+                o = e.taxPreferenceYears > 0 ? n <= e.taxPreferenceYears ? 0 : Math.max(0, s) * e.incomeTax : e.taxHoliday ? n <= 3 ? 0 : n <= 6 ? Math.max(0, s) * e.incomeTax * .5 : Math.max(0, s) * e.incomeTax : Math.max(0, s) * e.incomeTax, ot[a] = o
             }
             const rt = P - L;
             let lt = s(),
@@ -2575,15 +2575,15 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             for (let a = t; a < n; a++) {
                 const n = a - t + 1;
                 Lt[a] = Fe[a] + Se[a] + Ff[a];
-                const s = e.taxHoliday ? n <= 3 ? 0 : n <= 6 ? .5 * e.incomeTax : e.incomeTax : n <= e.taxPreferenceYears ? 0 : e.incomeTax;
+                const s = e.taxPreferenceYears > 0 ? n <= e.taxPreferenceYears ? 0 : e.incomeTax : e.taxHoliday ? n <= 3 ? 0 : n <= 6 ? .5 * e.incomeTax : e.incomeTax : e.incomeTax;
                 Ot[a] = H[a] * s
             }
-            const Bt = calcNPV([0].concat(Lt.slice(t)), l),
-                Nt = calcNPV([0].concat(Ot.slice(t)), l),
-                Yt = q / Math.pow(1 + l, a),
+            const Bt = calcNPV(Lt.slice(t), l),
+                Nt = calcNPV(Ot.slice(t), l),
+                Yt = q / Math.pow(1 + l, Math.max(0, Math.min(e.deprYears, a) - 1)),
                 Dt = [0];
             for (let e = t; e < n; e++) Dt[e - t + 1] = se[e] / 1e4;
-            const Ht = calcNPV(Dt, l),
+            const Ht = calcNPV(Dt.slice(1), l),
                 qt = Ht > 0 ? (P + Bt - Nt - Yt) / Ht : 0,
                 jt = te.reduce((e, t, a) => e + (a > 0 ? t : 0), 0) / a,
                 Vt = De.reduce((e, t, a) => e + (a > 0 ? t : 0), 0) / a,
@@ -2706,23 +2706,23 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                     label: "运营成本现值 PV of Opex",
                     cn: "运营成本现值",
                     value: Bt,
-                    note: "∑ Opex / (1+WACC)^t"
+                    note: "∑ Opex / (1+WACC)^(t-1)"
                 }, {
                     label: "折旧抵税现值 PV of Tax Shield",
                     cn: "折旧抵税现值",
-                    value: -Nt,
+                    value: Nt,
                     note: "Depreciation × Tax Rate discounted"
                 }, {
                     label: "残值现值 PV of Residual",
                     cn: "残值现值",
-                    value: -Yt,
-                    note: "Residual Value / (1+WACC)^N"
+                    value: Yt,
+                    note: "Residual Value / (1+WACC)^(N-1)"
                 }];
             let aa = '<div class="lcoe-header"><h3>LCOE 计算过程 <span style="font-size:0.72rem;color:#1f5051;font-weight:400">Levelized Cost Calculation</span></h3></div>';
             aa += '<div class="lcoe-formula">LCOE = (总投资 + 运营成本现值 - 折旧抵税现值 - 残值现值) / 发电量现值</div>', aa += '<table class="lcoe-table"><thead><tr><th style="width:40%">项目 <span class="en" style="font-weight:400;font-size:0.65rem;color:#315468">Item</span></th><th style="width:35%">说明 <span class="en" style="font-weight:400;font-size:0.65rem;color:#315468">Note</span></th><th style="width:25%">金额(万元) <span class="en" style="font-weight:400;font-size:0.65rem;color:#315468">Amount(10K CNY)</span></th></tr></thead><tbody>';
             let na = 0;
             for (const e of ta) na++, aa += `<tr><td>${na}. ${e.cn}<br><span class="en" style="font-size:0.6rem;color:#315468">${e.label}</span></td><td style="font-size:0.65rem;color:#315468">${e.note}</td><td style="text-align:right;font-weight:600">${ea(e.value)}</td></tr>`;
-            aa += `<tr class="lcoe-total"><td>分子合计 <span class="en" style="font-size:0.6rem;color:#315468">Numerator Total</span></td><td style="font-size:0.65rem;color:#315468">Total Invest + PV(Opex - TaxShield - Residual)</td><td style="text-align:right;font-weight:700;color:#0d7c3f">${ea(P+Bt-Nt-Yt)}</td></tr>`, aa += `<tr><td>发电量现值 <span class="en" style="font-size:0.6rem;color:#315468">PV of Generation</span></td><td style="font-size:0.65rem;color:#315468">∑ Generation_t / (1+WACC)^t (万kWh)</td><td style="text-align:right;font-weight:600">${ea(Ht)}</td></tr>`, aa += `<tr class="lcoe-result"><td>LCOE <span class="en" style="font-size:0.6rem;color:#315468">Levelized Cost</span></td><td style="font-size:0.65rem;color:#315468">Numerator / PV of Generation</td><td style="text-align:right;font-weight:700;color:#6d4f06;font-size:1rem">${qt.toFixed(4)} <span style="font-size:0.65rem;color:#315468;font-weight:400">CNY/kWh</span></td></tr>`, aa += "</tbody></table>", aa += '<div style="font-size:0.6rem;color:#3f5a69;margin-top:4px;text-align:right">WACC = ' + (100 * l).toFixed(2) + "%（" + ccyLabel(e.waccCcy) + "） &nbsp;|&nbsp; 运营期 N = " + a + ' <span class="en" style="font-weight:400;font-size:0.6rem;color:#3f5a69">years</span></div>', document.getElementById("lcoeDetail").innerHTML = aa;
+            aa += `<tr class="lcoe-total"><td>分子合计 <span class="en" style="font-size:0.6rem;color:#315468">Numerator Total</span></td><td style="font-size:0.65rem;color:#315468">Total Invest + PV(Opex - TaxShield - Residual)</td><td style="text-align:right;font-weight:700;color:#0d7c3f">${ea(P+Bt-Nt-Yt)}</td></tr>`, aa += `<tr><td>发电量现值 <span class="en" style="font-size:0.6rem;color:#315468">PV of Generation</span></td><td style="font-size:0.65rem;color:#315468">∑ Generation_t / (1+WACC)^(t-1) (万kWh)</td><td style="text-align:right;font-weight:600">${ea(Ht)}</td></tr>`, aa += `<tr class="lcoe-result"><td>LCOE <span class="en" style="font-size:0.6rem;color:#315468">Levelized Cost</span></td><td style="font-size:0.65rem;color:#315468">Numerator / PV of Generation</td><td style="text-align:right;font-weight:700;color:#6d4f06;font-size:1rem">${qt.toFixed(4)} <span style="font-size:0.65rem;color:#315468;font-weight:400">CNY/kWh</span></td></tr>`, aa += "</tbody></table>", aa += '<div style="font-size:0.6rem;color:#3f5a69;margin-top:4px;text-align:right">WACC = ' + (100 * l).toFixed(2) + "%（" + ccyLabel(e.waccCcy) + "） &nbsp;|&nbsp; 运营期 N = " + a + ' <span class="en" style="font-weight:400;font-size:0.6rem;color:#3f5a69">years</span></div>', document.getElementById("lcoeDetail").innerHTML = aa;
             const sa = [];
             for (let e = 0; e < n; e++) sa.push(e < t ? 0 === e ? '建设期<span class="en">Construction Period</span>' : `建设期${e+1}<span class="en">Construction Period</span>` : "Y" + (e - t + 1));
             const oa = lt.map(e => e / 100),
@@ -3019,9 +3019,10 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 wn = s();
             for (let e = t; e < n; e++) hn[e] = cn[e] + un[e], xn[e] = pn[e] + mn[e], wn[e] = dn[e] + yn[e];
             let vn = s();
+            const vnLast = Math.min(e.deprYears, n - t);
             for (let a = t; a < n; a++) {
                 const n = a - t + 1;
-                vn[a] = n === e.deprYears + 1 ? N * e.deprResidual : 0
+                vn[a] = n === vnLast ? N * e.deprResidual : 0
             }
             document.getElementById("tabDepreciation").innerHTML = `<div style="font-weight:600;color:#1a4a5a;padding:4px 8px;font-size:0.7rem;text-align:center;background:#eaf2f2">财务分析辅助报表11----固定资产折旧费估算表<span style="display:block;font-weight:400;color:#2e5454;font-size:0.6rem;margin-top:2px">Depreciation Schedule</span></div><div style="text-align:right;color:#2e5454;font-size:0.6rem;padding:2px 8px">单位<br>Unit: 10K CNY</div><table>${ha}<tbody>\n ${Ia('1 固定资产折旧1 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">PV Station Depreciation</span>')}\n ${wa(' 1.10 原值 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Original Value</span>',cn)}\n ${wa(' 1.20 本年折旧费 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Annual Depreciation</span>',pn)}\n ${wa(' 1.30 净值 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Net Value</span>',dn)}\n ${Ia('2 固定资产折旧2 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Storage Depreciation</span>')}\n ${wa(' 2.10 原值 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Original Value</span>',un)}\n ${wa(' 2.20 本年折旧费 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Annual Depreciation</span>',mn)}\n ${wa(' 2.30 净值 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Net Value</span>',yn)}\n ${Ia('3 固定资产合计 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Combined Total</span>')}\n ${wa(' 3.10 原值 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Original Value</span>',hn)}\n ${wa(' 3.20 本年折旧费 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Annual Depreciation</span>',xn)}\n ${wa(' 3.30 净值 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Net Value</span>',wn)}\n ${wa('残值 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Residual Value</span>',vn)}\n ${wa('折旧抵税 <span style="font-size:0.67rem;font-weight:400;color:#1f5051">Depreciation Tax Shield</span>',Ot)}\n ${xa}</tbody></table>`;
             let bn = s(),
