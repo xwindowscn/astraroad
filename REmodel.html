@@ -2452,7 +2452,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                         s = n <= e.warrantyYears ? e.storageOutsourceRepIn : e.storageOutsourceRepOut;
                     Se[a] += (t + s) * Ee / 1e4
                 }
-                Fe[a] = o + r + l + i + c + d, FfS[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.selfOtherIn : e.selfOtherOut : n <= e.warrantyYears ? e.outsourceOtherIn : e.outsourceOtherOut) * e.dcCap, FfG[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.storageSelfOtherIn : e.storageSelfOtherOut : n <= e.warrantyYears ? e.storageOutsourceOtherIn : e.storageOutsourceOtherOut) * e.storageRatio * e.acCap, Ff[a] = FfS[a] + FfG[a]
+                Fe[a] = o + r + l + c + d, FfS[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.selfOtherIn : e.selfOtherOut : n <= e.warrantyYears ? e.outsourceOtherIn : e.outsourceOtherOut) * e.dcCap, FfG[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.storageSelfOtherIn : e.storageSelfOtherOut : n <= e.warrantyYears ? e.storageOutsourceOtherIn : e.storageOutsourceOtherOut) * e.storageRatio * e.acCap, Ff[a] = FfS[a] + FfG[a]
             }
             let Le = s(),
                 Oe = s(),
@@ -3094,7 +3094,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 var gs = 1 === e.omMode ? (e.selfRepRateIn + e.selfRepRateOut) / 2 : (e.outsourceRepRateIn + e.outsourceRepRateOut) / 2;
                 fs = (1 === e.omMode ? (e.selfMatIn + e.selfMatOut) / 2 : (e.outsourceMatIn + e.outsourceMatOut) / 2) * e.dcCap + N * gs
             } else fs = 1 === e.omMode ? (e.selfMatIn + e.selfRepIn + (e.selfMatOut + e.selfRepOut)) / 2 * e.dcCap : ((e.outsourceMatIn + e.outsourceRepIn + (e.outsourceMatOut + e.outsourceRepOut)) / 2 + e.outsourceAnnual) * e.dcCap;
-            const us = (cs + fs + ds + e.landArea * e.annualRent * e.exchangeRate / 1e4 + e.landArea * e.landCompensation * e.exchangeRate / 1e4 + N * e.propertyTax) / e.dcCap;
+            const us = (cs + fs + ds + e.landArea * e.annualRent * e.exchangeRate / 1e4 + N * e.propertyTax) / e.dcCap;
             const mvOm = document.getElementById("mv_omCost"), mvOmKw = document.getElementById("mv_omCostKw");
             mvOm && (mvOm.textContent = isFinite(us) ? (us / 1e3).toFixed(4) : "—");
             mvOmKw && (mvOmKw.textContent = isFinite(us) ? us.toFixed(2) : "—");
