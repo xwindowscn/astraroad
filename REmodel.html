@@ -2452,7 +2452,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                         s = n <= e.warrantyYears ? e.storageOutsourceRepIn : e.storageOutsourceRepOut;
                     Se[a] += (t + s) * Ee / 1e4
                 }
-                Fe[a] = o + r + l + i + c + d, FfS[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.selfOtherIn : e.selfOtherOut : n <= e.warrantyYears ? e.outsourceOtherIn : e.outsourceOtherOut) * e.dcCap, FfG[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.storageSelfOtherIn : e.storageSelfOtherOut : n <= e.warrantyYears ? e.storageOutsourceOtherIn : e.storageOutsourceOtherOut) * e.storageRatio * e.dcCap, Ff[a] = FfS[a] + FfG[a]
+                Fe[a] = o + r + l + i + c + d, FfS[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.selfOtherIn : e.selfOtherOut : n <= e.warrantyYears ? e.outsourceOtherIn : e.outsourceOtherOut) * e.dcCap, FfG[a] = 2 === e.costMethod ? 0 : (1 === e.omMode ? n <= e.warrantyYears ? e.storageSelfOtherIn : e.storageSelfOtherOut : n <= e.warrantyYears ? e.storageOutsourceOtherIn : e.storageOutsourceOtherOut) * e.storageRatio * e.acCap, Ff[a] = FfS[a] + FfG[a]
             }
             let Le = s(),
                 Oe = s(),
