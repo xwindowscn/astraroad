@@ -2493,7 +2493,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                     l = e.vatRefund ? 2 : 1,
                     i = r > 0 ? Math.max(0, r - o) / l : 0;
                 Ke[a] = n <= e.vatExemptYears ? 0 : i, Ue[a] = Math.max(0, ae[a] - Ke[a]), Ge[a] = e.tariffInclTax ? ae[a] * e.cityConstrTax : 0, Je[a] = e.tariffInclTax ? ae[a] * e.eduSurcharge : 0;
-                const c = n <= e.salesTaxExemptYears ? 0 : te[a] * e.salesTaxRate;
+                const c = e.tariffInclTax && n > e.salesTaxExemptYears ? te[a] * e.salesTaxRate : 0;
                 Ze[a] = c, He[a] = Ge[a] + Je[a] + c, qe[a] = Fe[a] + Se[a] + Ff[a] + H[a] + Ce[a] + Oe[a];
                 const p = te[a] + ae[a] - He[a] - qe[a];
                 Ne[a] = p, je[a] = p + Oe[a], Ve[a] = je[a] + H[a] + Ce[a], Xe[a] = p;
