@@ -2212,7 +2212,12 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
 
         function calcAll() {
             const e = readParams();
-            e.actualGuaranteedHours = Math.min(e.guaranteedHoursPolicy, e.firstYearHours), document.getElementById("p_actualGuaranteedHours").value = e.actualGuaranteedHours;
+            {
+                const _Xeq = e.storageRatio * e.storageDays * e.storageDuration,
+                    _j = e.actualGenHours, _V = e.guaranteedHoursPolicy;
+                e.actualGuaranteedHours = _j <= 0 ? 0 : (_j - _V > _Xeq ? _V : _V - (_Xeq - (_j - _V)));
+            }
+            document.getElementById("p_actualGuaranteedHours").value = e.actualGuaranteedHours;
             const t = Math.max(1, parseInt(e.constructPeriod) || 1),
                 a = Math.round(e.operPeriod),
                 n = t + a;
@@ -2293,6 +2298,8 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             if (e.storageDuration > 0 && b > 0) for (let k = 1; k <= b; k++) R += y / Math.pow(1 + l, k * w + t);
             const z = document.getElementById("p_batteryReplaceTimes");
             z && (z.value = v.toFixed(3));
+            const zEq = document.getElementById("p_storageEqHours");
+            zEq && (zEq.value = (e.storageRatio * e.storageDays * e.storageDuration).toFixed(0));
             const C = m + R,
                 _ = e.storageMgmtRate || .029,
                 I = C > 0 ? C / (1 + _) : 0,
@@ -2315,7 +2322,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             const q = N * e.deprResidual,
                 j = e.actualGenHours,
                 V = e.guaranteedHoursPolicy,
-                X = e.storageEqHours;
+                X = e.storageRatio * e.storageDays * e.storageDuration;
             let W, K, U;
             if (0 === j) W = 0, K = 0, U = 0;
             else {
