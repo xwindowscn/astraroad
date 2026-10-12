@@ -2574,7 +2574,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 Ot = s();
             for (let a = t; a < n; a++) {
                 const n = a - t + 1;
-                Lt[a] = Fe[a] + Se[a];
+                Lt[a] = Fe[a] + Se[a] + Ff[a];
                 const s = e.taxHoliday ? n <= 3 ? 0 : n <= 6 ? .5 * e.incomeTax : e.incomeTax : n <= e.taxPreferenceYears ? 0 : e.incomeTax;
                 Ot[a] = H[a] * s
             }
