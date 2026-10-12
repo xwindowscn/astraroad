@@ -1425,8 +1425,8 @@
                     <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:4px">
                         <div class="wacc-f wacc-sel wacc-card"><label>本项目的 WACC 采用的币种</label>
                             <select id="p_waccCcy" onchange="onWaccCcyChange()">
-                                <option value="CNY" selected>人民币 RMB（10Y）</option>
-                                <option value="USD">美元 USD（10Y）</option>
+                                <option value="CNY" selected>人民币 RMB（10Y 1.68%）</option>
+                                <option value="USD">美元 USD（10Y 5.24%）</option>
                             </select>
                         </div>
                         <div class="wacc-f wacc-sel wacc-card"><label>R<sub>d</sub> 的确定方式</label>
@@ -1817,6 +1817,15 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
         function ccyLabel(cd){ if(cd==="CNY") return "人民币 RMB"; if(cd==="USD") return "美元 USD"; const x=LOCAL_CCY_DB[cd]; return x? (x.cn+" "+cd) : (cd||"—"); }
         function ccyShort(cd){ if(cd==="CNY") return "RMB"; if(cd==="USD") return "USD"; return cd||""; }
         function localCcyCode(){ const cs=document.getElementById("p_country"); return cs? (COUNTRY_CCY[cs.value]||"") : ""; }
+        // 币种下拉标签：人民币/美元 项后带当前 10Y 无风险利率（随联网刷新与输入变动实时更新）
+        function refreshCcyOptionLabels(){
+            const sel=document.getElementById("p_waccCcy"); if(!sel) return;
+            const rate=function(id){ const el=document.getElementById(id), v=el?parseFloat(el.value):NaN; return isFinite(v)? v.toFixed(2)+"%" : "—"; };
+            for(let i=0;i<sel.options.length;i++){ const o=sel.options[i];
+                if(o.value==="CNY") o.textContent="人民币 RMB（10Y "+rate("p_riskFreeRateCny")+"）";
+                else if(o.value==="USD") o.textContent="美元 USD（10Y "+rate("p_riskFreeRate")+"）";
+            }
+        }
         // 本国货币下拉项：随国别动态重建（第三项）；resetRf=true 时用快照重置本币 rf
         function refreshLocalCcyOption(resetRf){
             const sel=document.getElementById("p_waccCcy"); if(!sel) return;
@@ -1836,6 +1845,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 rfl.title="项目所在国本币 10Y 国债收益率；"+(info?("来源："+info.src+"（as of "+info.asof+"），可手改"):"暂无本币 10Y 基准，请手填");
                 if(resetRf) rfl.value = info? info.rf : "";
             }
+            refreshCcyOptionLabels();
         }
         function applyCountry(setAll){
             const cs=document.getElementById("p_country"); if(!cs) return;
@@ -1857,6 +1867,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             const el=document.getElementById("waccDataSource"); if(!el) return;
             const sel=document.getElementById("p_waccCcy"); const ccy=sel?sel.value:"CNY";
             el.textContent="取数：Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+" · 折现币种 "+ccyLabel(ccy)+dscrSuffix();
+            refreshCcyOptionLabels();
         }
         // 国别类别：按主权评级分三档，决定"相对主权项目溢价"的整体水平（不手改）
         //   投资级(Baa3+)→加成 0.0%；投机级(Ba1–B2)→+1.0%；前沿(B3 及以下、NR)→+2.0%
@@ -1965,6 +1976,9 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             }
             if(ok) WACC_DATA_ASOF=new Date().toISOString().slice(0,10);
             _waccFetchAt=Date.now();
+            // 把刷新到的最新无风险利率写回模型输入（否则只更新 RF_DB，模型与下拉标签仍停留在旧值）
+            const _rf=document.getElementById("p_riskFreeRate"); if(_rf && isFinite(RF_DB.usd10y)) _rf.value=RF_DB.usd10y;
+            const _rfc=document.getElementById("p_riskFreeRateCny"); if(_rfc && isFinite(RF_DB.rmb10y)) _rfc.value=RF_DB.rmb10y;
             populateWaccSelects(true); applyCountry(false); applySector();
             if(typeof calcAll==="function") calcAll();
             if(el) el.textContent=(ok?"已联网更新 · ":"联网失败，用离线快照 · ")+"Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+dscrSuffix();
