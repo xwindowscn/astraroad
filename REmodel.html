@@ -1423,7 +1423,7 @@
                         <div class="wacc-f wacc-sel wacc-card"><label>所属行业（取 β<sub>u</sub>）</label><select id="p_sector" onchange="onSectorChange()"></select></div>
                     </div>
                     <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:4px">
-                        <div class="wacc-f wacc-sel wacc-card"><label>本模型折现币种</label>
+                        <div class="wacc-f wacc-sel wacc-card"><label>本项目的 WACC 采用的币种</label>
                             <select id="p_waccCcy" onchange="onWaccCcyChange()">
                                 <option value="CNY" selected>人民币 RMB（10Y）</option>
                                 <option value="USD">美元 USD（10Y）</option>
@@ -1436,12 +1436,13 @@
                             </select>
                         </div>
                     </div>
-                    <div style="grid-column:1/-1;font-size:0.62rem;color:#7a9aaa;line-height:1.3;margin-top:-1px" id="waccCcyHint">折现率币种须与现金流币种一致；本项目现金流为人民币 ⇒ 默认取人民币套 WACC，美元套列对照。</div>
+                    <div style="grid-column:1/-1;font-size:0.62rem;color:#7a9aaa;line-height:1.3;margin-top:-1px" id="waccCcyHint">折现率币种须与现金流币种一致；默认取人民币套 WACC，美元套对照，第三项为本国货币（随项目所在国动态变化，按其本币 10Y 无风险利率另列）。</div>
                     <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:4px">
                         <div class="wacc-f wacc-card"><label>国别违约利差</label><span class="wacc-box"><input type="number" id="p_countryDefSpread" value="5.52" step="0.01" readonly title="随国别自动取数（Damodaran ctryprem），不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>信用利差</label><span class="wacc-box"><input type="number" id="p_creditSpread" value="1" step="0.05" readonly title="由模型 DSCR(min) 档 + 国别类别派生，不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>r<sub>RF</sub> 美元10Y</label><span class="wacc-box"><input type="number" id="p_riskFreeRate" value="5.24" step="0.1" readonly title="联网取数（FRED DGS10 美元10Y），不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>r<sub>RF</sub> 人民币10Y</label><span class="wacc-box"><input type="number" id="p_riskFreeRateCny" value="1.679" step="0.01" readonly title="人民币10Y 无风险利率（中债/CCDC 快照），不可手改"><span class="unit">%</span></span></div>
+                        <div class="wacc-f wacc-card"><label>r<sub>RF</sub> 本国货币10Y <span id="p_localCcyTag" style="font-size:0.54rem;color:#8a9aaa;font-weight:400"></span></label><span class="wacc-box"><input type="number" id="p_riskFreeRateLocal" value="" step="0.01" onchange="if(typeof calcAll==='function')calcAll()" oninput="if(typeof calcAll==='function')calcAll()" title="项目所在国本币 10Y 国债收益率；随国别自动取快照，可手改覆盖"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>β<sub>u</sub>（随行业）</label><span class="wacc-box"><input type="number" id="p_betaU" value="0.55" step="0.01" readonly title="随行业自动取数（Damodaran BetasGlobal），不可手改"><span class="unit">&nbsp;</span></span></div>
                         <div class="wacc-f wacc-card"><label>ERP</label><span class="wacc-box"><input type="number" id="p_erp" value="4.23" step="0.5" readonly title="成熟市场 ERP（Damodaran ctryprem 反推），自动取数，不可手改"><span class="unit">%</span></span></div>
                         <div class="wacc-f wacc-card"><label>CRP</label><span class="wacc-box"><input type="number" id="p_crp" value="8.41" step="0.1" readonly title="随国别自动取数（Damodaran ctryprem），不可手改"><span class="unit">%</span></span></div>
@@ -1492,16 +1493,16 @@
                     <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:4px;align-items:start">
                     <div class="field" style="background:#fffdf5;border-radius:4px;padding:6px 8px;border:1px solid #e8ddb8">
                         <div style="font-size:0.68rem;color:#5a7a6a;line-height:1.5">
-                            <div style="font-weight:700;color:#8a6d1a;margin-bottom:3px">💰 美元 vs 人民币 参照 <span class="en" style="font-weight:400">USD vs RMB Reference</span>｜<span style="font-weight:400;color:#5a7a6a;font-size:0.64rem">左列＝本模型折现币种，右列＝另一币种对照</span></div>
+                            <div style="font-weight:700;color:#8a6d1a;margin-bottom:3px">💰 币种对照 · WACC 结论 <span class="en" style="font-weight:400">Currency Reference</span>｜<span style="font-weight:400;color:#5a7a6a;font-size:0.64rem">左列＝本模型所选币种，中列＝对照，右列＝本国货币（随项目所在国变化）</span></div>
                             <table style="width:100%;border-collapse:collapse;font-size:0.7rem;table-layout:fixed">
-                                <colgroup><col style="width:40%"><col style="width:30%"><col style="width:30%"></colgroup>
-                                <tr><td style="padding:1px 4px;color:#5a7a8a">口径 <span class="en">Suite</span></td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpCcyA">人民币（本模型）</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpCcyB">美元（对照）</td></tr>
-                                <tr><td style="padding:1px 4px;color:#5a7a8a">无风险利率 rRF</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpRfA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpRfB">—</td></tr>
-                                <tr><td style="padding:1px 4px;color:#5a7a8a">再杠杆β βL</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpBlA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpBlB">—</td></tr>
-                                <tr><td style="padding:1px 4px;color:#5a7a8a">权益成本 Re</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpReA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpReB">—</td></tr>
-                                <tr><td style="padding:1px 4px;color:#5a7a8a">融资成本 Rd</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpRdA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpRdB">—</td></tr>
-                                <tr><td style="padding:1px 4px;color:#5a7a8a">税后融资成本 Rd×(1−Tc)</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpRdAtA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpRdAtB">—</td></tr>
-                                <tr><td style="padding:1px 4px;color:#8a6d1a;font-weight:700">WACC ★</td><td style="text-align:right;padding:1px 4px;color:#b8860b;font-weight:700" id="waccCmpWaccA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpWaccB">—</td></tr>
+                                <colgroup><col style="width:34%"><col style="width:22%"><col style="width:22%"><col style="width:22%"></colgroup>
+                                <tr><td style="padding:1px 4px;color:#5a7a8a">口径 <span class="en">Suite</span></td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpCcyA">人民币（本模型）</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpCcyB">美元（对照）</td><td style="text-align:right;padding:1px 4px;color:#2e6a9a;font-weight:700" id="waccCmpCcyC">本国货币</td></tr>
+                                <tr><td style="padding:1px 4px;color:#5a7a8a">无风险利率 rRF</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpRfA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpRfB">—</td><td style="text-align:right;padding:1px 4px;color:#2e6a9a;font-weight:700" id="waccCmpRfC">—</td></tr>
+                                <tr><td style="padding:1px 4px;color:#5a7a8a">再杠杆β βL</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpBlA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpBlB">—</td><td style="text-align:right;padding:1px 4px;color:#2e6a9a;font-weight:700" id="waccCmpBlC">—</td></tr>
+                                <tr><td style="padding:1px 4px;color:#5a7a8a">权益成本 Re</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpReA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpReB">—</td><td style="text-align:right;padding:1px 4px;color:#2e6a9a;font-weight:700" id="waccCmpReC">—</td></tr>
+                                <tr><td style="padding:1px 4px;color:#5a7a8a">融资成本 Rd</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpRdA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpRdB">—</td><td style="text-align:right;padding:1px 4px;color:#2e6a9a;font-weight:700" id="waccCmpRdC">—</td></tr>
+                                <tr><td style="padding:1px 4px;color:#5a7a8a">税后融资成本 Rd×(1−Tc)</td><td style="text-align:right;padding:1px 4px;color:#0d7c3f;font-weight:700" id="waccCmpRdAtA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpRdAtB">—</td><td style="text-align:right;padding:1px 4px;color:#2e6a9a;font-weight:700" id="waccCmpRdAtC">—</td></tr>
+                                <tr><td style="padding:1px 4px;color:#8a6d1a;font-weight:700">WACC ★</td><td style="text-align:right;padding:1px 4px;color:#b8860b;font-weight:700" id="waccCmpWaccA">—</td><td style="text-align:right;padding:1px 4px;color:#5a7a8a;font-weight:700" id="waccCmpWaccB">—</td><td style="text-align:right;padding:1px 4px;color:#2e6a9a;font-weight:700" id="waccCmpWaccC">—</td></tr>
                             </table>
                         </div>
                     </div>
@@ -1752,6 +1753,39 @@
         // ===== WACC 国别 / 行业取数（Damodaran ctryprem · BetasGlobal）=====
         const MATURE_ERP_DEFAULT = 4.23;
         const RF_DB = { usd10y: 5.24, rmb10y: 1.679, asof: "2026-09-28" };
+        // 本国货币 10Y 无风险利率快照（本币口径；来源 src 与 as of 见各列；界面可手改覆盖）
+        const LOCAL_CCY_DB = {
+            "USD":{cn:"美元",en:"US Dollar",rf:5.24,asof:"2026-09-28",src:"美国财政部 UST 10Y（FRED DGS10）"},
+            "CNY":{cn:"人民币",en:"Chinese Yuan",rf:1.679,asof:"2026-09-28",src:"中债（CCDC）国债 10Y"},
+            "KGS":{cn:"吉尔吉斯斯坦索姆",en:"Kyrgyzstani Som",rf:16.00,asof:"2026-10-09",src:"吉尔吉斯财政部/NBKR 10Y GKO 拍卖"},
+            "KZT":{cn:"哈萨克斯坦坚戈",en:"Kazakhstani Tenge",rf:12.77,asof:"2026-10-05",src:"Cbonds KZT 10Y 国债收益率曲线"},
+            "UZS":{cn:"乌兹别克斯坦苏姆",en:"Uzbekistani Som",rf:15.94,asof:"2026-09-30",src:"Cbonds 乌兹别克 10Y 平价曲线"},
+            "MNT":{cn:"蒙古图格里克",en:"Mongolian Tugrik",rf:14.42,asof:"2026-09-30",src:"蒙古证券交易所 10Y 国债拍卖"},
+            "GEL":{cn:"格鲁吉亚拉里",en:"Georgian Lari",rf:9.44,asof:"2026-03-10",src:"格鲁吉亚财政部 10Y+ 国债拍卖"},
+            "TRY":{cn:"土耳其里拉",en:"Turkish Lira",rf:32.60,asof:"2026-10-02",src:"土耳其 10Y 国债收益率"},
+            "PKR":{cn:"巴基斯坦卢比",en:"Pakistani Rupee",rf:11.01,asof:"2026-01-28",src:"巴基斯坦 10Y 国债收益率"},
+            "VND":{cn:"越南盾",en:"Vietnamese Dong",rf:4.54,asof:"2026-07-15",src:"越南 10Y 国债收益率"},
+            "INR":{cn:"印度卢比",en:"Indian Rupee",rf:6.78,asof:"2026-07-31",src:"印度 10Y 国债收益率"},
+            "IDR":{cn:"印度尼西亚盾",en:"Indonesian Rupiah",rf:7.00,asof:"2026-04-30",src:"LSEG 印尼 7–10Y 国债"},
+            "THB":{cn:"泰铢",en:"Thai Baht",rf:2.34,asof:"2026-10-01",src:"泰国 10Y 国债收益率"}
+        };
+        // 国别 → 本国货币（ISO 4217）；无 10Y 基准者本币 rf 需手填
+        const COUNTRY_CCY = {
+            "United States":"USD","China":"CNY","Hong Kong":"HKD","Taiwan":"TWD","Japan":"JPY","Korea":"KRW",
+            "Kyrgyzstan":"KGS","Kazakhstan":"KZT","Uzbekistan":"UZS","Tajikistan":"TJS","Mongolia":"MNT",
+            "Georgia":"GEL","Armenia":"AMD","Azerbaijan":"AZN","Turkey":"TRY","Pakistan":"PKR","India":"INR",
+            "Indonesia":"IDR","Vietnam":"VND","Thailand":"THB","Malaysia":"MYR","Philippines":"PHP","Singapore":"SGD",
+            "Russia":"RUB","Brazil":"BRL","Mexico":"MXN","Argentina":"ARS","Chile":"CLP","Peru":"PEN","Colombia":"COP",
+            "South Africa":"ZAR","Egypt":"EGP","Nigeria":"NGN","Kenya":"KES","Ghana":"GHS","Morocco":"MAD","Tunisia":"TND",
+            "Saudi Arabia":"SAR","United Arab Emirates":"AED","Qatar":"QAR","Kuwait":"KWD","Oman":"OMR","Bahrain":"BHD","Israel":"ILS",
+            "United Kingdom":"GBP","Germany":"EUR","France":"EUR","Italy":"EUR","Spain":"EUR","Netherlands":"EUR","Belgium":"EUR",
+            "Ireland":"EUR","Portugal":"EUR","Austria":"EUR","Finland":"EUR","Greece":"EUR","Cyprus":"EUR","Slovakia":"EUR","Slovenia":"EUR",
+            "Croatia":"EUR","Estonia":"EUR","Latvia":"EUR","Lithuania":"EUR","Luxembourg":"EUR","Malta":"EUR",
+            "Poland":"PLN","Czech Republic":"CZK","Hungary":"HUF","Romania":"RON","Bulgaria":"BGN","Serbia":"RSD",
+            "Ukraine":"UAH","Moldova":"MDL","Belarus":"BYR","Bangladesh":"BDT","Sri Lanka":"LKR","Nepal":"NPR",
+            "Cambodia":"KHR","Laos":"LAK","Myanmar":"MMR","Brunei":"BND","Canada":"CAD","Australia":"AUD","New Zealand":"NZD",
+            "Norway":"NOK","Sweden":"SEK","Denmark":"DKK","Switzerland":"CHF","Iceland":"ISK"
+        };
         const COUNTRY_CN = { "China":"中国","Kyrgyzstan":"吉尔吉斯斯坦","Uzbekistan":"乌兹别克斯坦","Kazakhstan":"哈萨克斯坦","Mongolia":"蒙古","Georgia":"格鲁吉亚","Turkey":"土耳其","Pakistan":"巴基斯坦","Tajikistan":"塔吉克斯坦","Vietnam":"越南","Indonesia":"印度尼西亚","India":"印度","Russia":"俄罗斯","United States":"美国","Armenia":"亚美尼亚","Brazil":"巴西" };
         const COUNTRY_PRIORITY = ["China","Kyrgyzstan","Uzbekistan","Kazakhstan","Mongolia","Georgia","Turkey","Pakistan","Tajikistan","Vietnam","Indonesia","India","Russia","United States"];
 const COUNTRY_DB = {"Abu Dhabi":{"rating":"Aa2","ds":0.42,"crp":0.64,"terp":4.87,"tax":9.0},"Albania":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":15.0},"Algeria":{"rating":"NR","ds":3.83,"crp":5.83,"terp":10.06,"tax":10.07},"Andorra\n                (Principality of)":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":10.0},"Angola":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":25.0},"Argentina":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":35.0},"Armenia":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":18.0},"Aruba":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":22.0},"Australia":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":30.0},"Austria":{"rating":"Aa1","ds":0.23,"crp":0.36,"terp":4.59,"tax":23.0},"Azerbaijan":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":20.0},"Bahamas":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":0.0},"Bahrain":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":0.0},"Bangladesh":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":27.5},"Barbados":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":9.0},"Belarus":{"rating":"C","ds":17.5,"crp":26.66,"terp":30.89,"tax":25.0},"Belgium":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":25.0},"Belize":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":0.0},"Benin":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":30.0},"Bermuda":{"rating":"A2","ds":0.72,"crp":1.1,"terp":5.33,"tax":0.0},"Bolivia":{"rating":"Ca","ds":10.2,"crp":15.54,"terp":19.77,"tax":25.0},"Bosnia and\n                Herzegovina":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":10.0},"Botswana":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":22.0},"Brazil":{"rating":"Ba1","ds":2.13,"crp":3.24,"terp":7.47,"tax":34.0},"Brunei":{"rating":"NR","ds":0.51,"crp":0.78,"terp":5.01,"tax":5.02},"Bulgaria":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":10.0},"Burkina Faso":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":27.5},"Cambodia":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":20.0},"Cameroon":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":33.0},"Canada":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":26.14},"Cape Verde":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":26.86},"Cayman Islands":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":0.0},"Chile":{"rating":"A2","ds":0.72,"crp":1.1,"terp":5.33,"tax":27.0},"China":{"rating":"A1","ds":0.6,"crp":0.91,"terp":5.14,"tax":25.0},"Colombia":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":35.0},"Congo\n                (Democratic Republic of)":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":30.0},"Congo\n                (Republic of)":{"rating":"Caa2","ds":7.65,"crp":11.66,"terp":15.89,"tax":26.86},"Cook Islands":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":20.0},"Costa Rica":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":30.0},"Côte d'Ivoire":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":25.0},"Croatia":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":18.0},"Cuba":{"rating":"Ca","ds":10.2,"crp":15.54,"terp":19.77,"tax":35.0},"Curacao":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":22.0},"Cyprus":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":12.5},"Czech Republic":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":21.0},"Denmark":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":22.0},"Dominican\n                Republic":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":27.0},"Ecuador":{"rating":"Caa3","ds":8.5,"crp":12.95,"terp":17.18,"tax":25.0},"Egypt":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":22.5},"El Salvador":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":30.0},"Estonia":{"rating":"A1","ds":0.6,"crp":0.91,"terp":5.14,"tax":20.0},"Ethiopia":{"rating":"Caa2","ds":7.65,"crp":11.66,"terp":15.89,"tax":30.0},"Fiji":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":25.0},"Finland":{"rating":"Aa1","ds":0.23,"crp":0.36,"terp":4.59,"tax":20.0},"France":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":25.83},"Gabon":{"rating":"Caa2","ds":7.65,"crp":11.66,"terp":15.89,"tax":30.0},"Gambia":{"rating":"NR","ds":4.67,"crp":7.12,"terp":11.35,"tax":11.36},"Georgia":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":15.0},"Germany":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":29.93},"Ghana":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":25.0},"Greece":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":22.0},"Guatemala":{"rating":"Ba1","ds":2.13,"crp":3.24,"terp":7.47,"tax":25.0},"Guernsey\n                (States of)":{"rating":"A1","ds":0.6,"crp":0.91,"terp":5.14,"tax":0.0},"Guinea":{"rating":"NR","ds":7.65,"crp":11.66,"terp":15.89,"tax":15.9},"Guinea-Bissau":{"rating":"NR","ds":6.37,"crp":9.71,"terp":13.94,"tax":13.95},"Guyana":{"rating":"NR","ds":1.36,"crp":2.07,"terp":6.3,"tax":6.31},"Haiti":{"rating":"NR","ds":8.5,"crp":12.95,"terp":17.18,"tax":17.19},"Honduras":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":30.0},"Hong Kong":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":16.5},"Hungary":{"rating":"Baa2","ds":1.62,"crp":2.46,"terp":6.69,"tax":9.0},"Iceland":{"rating":"A1","ds":0.6,"crp":0.91,"terp":5.14,"tax":21.0},"India":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":30.0},"Indonesia":{"rating":"Baa2","ds":1.62,"crp":2.46,"terp":6.69,"tax":22.0},"Iran":{"rating":"NR","ds":6.37,"crp":9.71,"terp":13.94,"tax":13.95},"Iraq":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":15.0},"Ireland":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":12.5},"Isle of Man":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":0.0},"Israel":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":23.0},"Italy":{"rating":"Baa2","ds":1.62,"crp":2.46,"terp":6.69,"tax":27.81},"Jamaica":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":25.0},"Japan":{"rating":"A1","ds":0.6,"crp":0.91,"terp":5.14,"tax":29.74},"Jersey (States\n                of)":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":0.0},"Jordan":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":20.0},"Kazakhstan":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":20.0},"Kenya":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":30.0},"Korea":{"rating":"Aa2","ds":0.42,"crp":0.64,"terp":4.87,"tax":26.4},"Korea, D.P.R.":{"rating":"NR","ds":10.2,"crp":15.54,"terp":19.77,"tax":19.78},"Kuwait":{"rating":"A1","ds":0.6,"crp":0.91,"terp":5.14,"tax":15.0},"Kyrgyzstan":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":10.0},"Laos":{"rating":"Caa2","ds":7.65,"crp":11.66,"terp":15.89,"tax":20.0},"Latvia":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":20.0},"Lebanon":{"rating":"C","ds":17.5,"crp":26.66,"terp":30.89,"tax":17.0},"Liberia":{"rating":"NR","ds":7.65,"crp":11.66,"terp":15.89,"tax":15.9},"Libya":{"rating":"NR","ds":2.56,"crp":3.9,"terp":8.13,"tax":8.14},"Liechtenstein":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":12.5},"Lithuania":{"rating":"A2","ds":0.72,"crp":1.1,"terp":5.33,"tax":15.0},"Luxembourg":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":24.94},"Macao":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":25.0},"Macedonia":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":10.0},"Madagascar":{"rating":"NR","ds":5.52,"crp":8.41,"terp":12.64,"tax":12.65},"Malawi":{"rating":"NR","ds":8.5,"crp":12.95,"terp":17.18,"tax":17.19},"Malaysia":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":24.0},"Maldives":{"rating":"Caa2","ds":7.65,"crp":11.66,"terp":15.89,"tax":15.0},"Mali":{"rating":"Caa2","ds":7.65,"crp":11.66,"terp":15.89,"tax":30.0},"Malta":{"rating":"A2","ds":0.72,"crp":1.1,"terp":5.33,"tax":35.0},"Mauritius":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":15.0},"Mexico":{"rating":"Baa2","ds":1.62,"crp":2.46,"terp":6.69,"tax":30.0},"Moldova":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":12.0},"Mongolia":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":25.0},"Montenegro":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":15.0},"Montserrat":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":30.0},"Morocco":{"rating":"Ba1","ds":2.13,"crp":3.24,"terp":7.47,"tax":33.0},"Mozambique":{"rating":"Caa3","ds":8.5,"crp":12.95,"terp":17.18,"tax":32.0},"Myanmar":{"rating":"NR","ds":10.2,"crp":15.54,"terp":19.77,"tax":19.78},"Namibia":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":32.0},"Nepal":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":25.0},"Netherlands":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":25.8},"New Zealand":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":28.0},"Nicaragua":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":30.0},"Niger":{"rating":"Caa3","ds":8.5,"crp":12.95,"terp":17.18,"tax":30.0},"Nigeria":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":30.0},"Norway":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":22.0},"Oman":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":15.0},"Pakistan":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":29.0},"Panama":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":25.0},"Papua New\n                Guinea":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":30.0},"Paraguay":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":10.0},"Peru":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":29.5},"Philippines":{"rating":"Baa2","ds":1.62,"crp":2.46,"terp":6.69,"tax":25.0},"Poland":{"rating":"A2","ds":0.72,"crp":1.1,"terp":5.33,"tax":19.0},"Portugal":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":31.5},"Qatar":{"rating":"Aa2","ds":0.42,"crp":0.64,"terp":4.87,"tax":10.0},"Ras Al Khaimah\n                (Emirate of)":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":18.94},"Romania":{"rating":"Baa3","ds":1.87,"crp":2.85,"terp":7.08,"tax":16.0},"Russia":{"rating":"NR","ds":2.56,"crp":3.9,"terp":8.13,"tax":8.14},"Rwanda":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":28.0},"Saudi Arabia":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":20.0},"Senegal":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":30.0},"Serbia":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":15.0},"Sharjah":{"rating":"Ba1","ds":2.13,"crp":3.24,"terp":7.47,"tax":18.94},"Sierra Leone":{"rating":"NR","ds":5.52,"crp":8.41,"terp":12.64,"tax":12.65},"Singapore":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":17.0},"Slovakia":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":21.0},"Slovenia":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":22.0},"Solomon\n                Islands":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":30.0},"Somalia":{"rating":"NR","ds":8.5,"crp":12.95,"terp":17.18,"tax":17.19},"South Africa":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":27.0},"Spain":{"rating":"A3","ds":1.02,"crp":1.55,"terp":5.78,"tax":25.0},"Sri Lanka":{"rating":"Ca","ds":10.2,"crp":15.54,"terp":19.77,"tax":30.0},"St. Maarten":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":20.0},"St. Vincent\n                & the Grenadines":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":28.0},"Sudan":{"rating":"NR","ds":17.5,"crp":26.66,"terp":30.89,"tax":30.9},"Suriname":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":36.0},"Swaziland":{"rating":"B2","ds":4.67,"crp":7.12,"terp":11.35,"tax":25.0},"Sweden":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":20.6},"Switzerland":{"rating":"Aaa","ds":0.0,"crp":0.0,"terp":4.23,"tax":19.61},"Syria":{"rating":"NR","ds":10.2,"crp":15.54,"terp":19.77,"tax":19.78},"Taiwan":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":20.0},"Tajikistan":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":18.0},"Tanzania":{"rating":"B1","ds":3.83,"crp":5.83,"terp":10.06,"tax":30.0},"Thailand":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":20.0},"Togo":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":27.0},"Trinidad and\n                Tobago":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":30.0},"Tunisia":{"rating":"Caa1","ds":6.37,"crp":9.71,"terp":13.94,"tax":15.0},"Turkey":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":25.0},"Turks and\n                Caicos Islands":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":0.0},"Uganda":{"rating":"B3","ds":5.52,"crp":8.41,"terp":12.64,"tax":30.0},"Ukraine":{"rating":"Ca","ds":10.2,"crp":15.54,"terp":19.77,"tax":18.0},"United Arab\n                Emirates":{"rating":"Aa2","ds":0.42,"crp":0.64,"terp":4.87,"tax":9.0},"United Kingdom":{"rating":"Aa3","ds":0.51,"crp":0.78,"terp":5.01,"tax":25.0},"United States":{"rating":"Aa1","ds":0.23,"crp":0.23,"terp":4.46,"tax":25.0},"Uruguay":{"rating":"Baa1","ds":1.36,"crp":2.07,"terp":6.3,"tax":25.0},"Uzbekistan":{"rating":"Ba3","ds":3.06,"crp":4.66,"terp":8.89,"tax":15.0},"Venezuela":{"rating":"C","ds":17.5,"crp":26.66,"terp":30.89,"tax":34.0},"Vietnam":{"rating":"Ba2","ds":2.56,"crp":3.9,"terp":8.13,"tax":20.0},"Yemen,\n                Republic":{"rating":"NR","ds":10.2,"crp":15.54,"terp":19.77,"tax":19.78},"Zambia":{"rating":"Caa2","ds":7.65,"crp":11.66,"terp":15.89,"tax":30.0},"Zimbabwe":{"rating":"NR","ds":7.65,"crp":11.66,"terp":15.89,"tax":15.9}};
@@ -1780,6 +1814,29 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             const ss=document.getElementById("p_sector");
             if(ss&&SECTOR_BU[ss.value]!=null){ const el=document.getElementById("p_betaU"); if(el) el.value=SECTOR_BU[ss.value]; }
         }
+        function ccyLabel(cd){ if(cd==="CNY") return "人民币 RMB"; if(cd==="USD") return "美元 USD"; const x=LOCAL_CCY_DB[cd]; return x? (x.cn+" "+cd) : (cd||"—"); }
+        function ccyShort(cd){ if(cd==="CNY") return "RMB"; if(cd==="USD") return "USD"; return cd||""; }
+        function localCcyCode(){ const cs=document.getElementById("p_country"); return cs? (COUNTRY_CCY[cs.value]||"") : ""; }
+        // 本国货币下拉项：随国别动态重建（第三项）；resetRf=true 时用快照重置本币 rf
+        function refreshLocalCcyOption(resetRf){
+            const sel=document.getElementById("p_waccCcy"); if(!sel) return;
+            const code=localCcyCode(), info=LOCAL_CCY_DB[code], prev=window._localCcy||"", curVal=sel.value;
+            for(let i=sel.options.length-1;i>=0;i--){ const v=sel.options[i].value; if(v!=="CNY"&&v!=="USD") sel.remove(i); }
+            const tag=document.getElementById("p_localCcyTag");
+            if(code){
+                const name=info?info.cn:code;
+                sel.add(new Option("本国货币 "+name+" "+code+(info?"（10Y "+info.rf.toFixed(2)+"%）":"（10Y 基准缺失·需手填）"), code));
+                if(tag) tag.textContent="（"+name+" "+code+"）";
+                // 此前选中的若是「本国货币」→ 跟随新国别本币
+                if(curVal && prev && curVal===prev) sel.value=code;
+            } else if(tag){ tag.textContent=""; }
+            window._localCcy=code;
+            const rfl=document.getElementById("p_riskFreeRateLocal");
+            if(rfl){
+                rfl.title="项目所在国本币 10Y 国债收益率；"+(info?("来源："+info.src+"（as of "+info.asof+"），可手改"):"暂无本币 10Y 基准，请手填");
+                if(resetRf) rfl.value = info? info.rf : "";
+            }
+        }
         function applyCountry(setAll){
             const cs=document.getElementById("p_country"); if(!cs) return;
             const k=cs.value, c=COUNTRY_DB[k]; if(!c) return;
@@ -1793,12 +1850,13 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 set("p_riskFreeRateCny", RF_DB.rmb10y);
                 applySector();
             }
+            refreshLocalCcyOption(!!setAll);
             updateWaccDataLine();
         }
         function updateWaccDataLine(){
             const el=document.getElementById("waccDataSource"); if(!el) return;
-            const ccy=document.getElementById("p_waccCcy")?document.getElementById("p_waccCcy").value:"CNY";
-            el.textContent="取数：Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+" · 折现币种 "+(ccy==="USD"?"美元 USD":"人民币 RMB")+dscrSuffix();
+            const sel=document.getElementById("p_waccCcy"); const ccy=sel?sel.value:"CNY";
+            el.textContent="取数：Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+" · 折现币种 "+ccyLabel(ccy)+dscrSuffix();
         }
         // 国别类别：按主权评级分三档，决定"相对主权项目溢价"的整体水平（不手改）
         //   投资级(Baa3+)→加成 0.0%；投机级(Ba1–B2)→+1.0%；前沿(B3 及以下、NR)→+2.0%
@@ -2033,9 +2091,12 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 reserveRate: t("p_reserveRate"),
                 betaU: e("p_betaU"),
                 waccCcy: document.getElementById("p_waccCcy") ? document.getElementById("p_waccCcy").value : "CNY",
+                localCcy: localCcyCode(),
                 riskFreeRateUsd: t("p_riskFreeRate"),
                 riskFreeRateCny: t("p_riskFreeRateCny"),
-                riskFreeRate: (document.getElementById("p_waccCcy") ? document.getElementById("p_waccCcy").value : "CNY") === "USD" ? t("p_riskFreeRate") : t("p_riskFreeRateCny"),
+                riskFreeRateLocal: t("p_riskFreeRateLocal"),
+                riskFreeRate: (function(){ const wc=document.getElementById("p_waccCcy")?document.getElementById("p_waccCcy").value:"CNY";
+                    return wc==="USD" ? t("p_riskFreeRate") : (wc==="CNY" ? t("p_riskFreeRateCny") : (t("p_riskFreeRateLocal")||t("p_riskFreeRate"))); })(),
                 erp: t("p_erp"),
                 crp: t("p_crp"),
                 waccRd: t("p_waccRd"),
@@ -2086,7 +2147,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 const tb = document.getElementById("equityValueBody");
                 if (!tb) return;
                 const ccyEl = document.getElementById("eqValCcy");
-                if (ccyEl) ccyEl.textContent = e.waccCcy === "USD" ? "美元 USD（对照套）" : "人民币 RMB（本模型）";
+                if (ccyEl) ccyEl.textContent = ccyLabel(e.waccCcy) + (e.waccCcy === e.localCcy ? "（本国货币套）" : (e.waccCcy === "USD" ? "（对照套）" : "（本模型）"));
                 const base = calcNPV(cf, wacc),
                     fnum = v => v.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
@@ -2181,20 +2242,28 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                     }
                 })(),
                 function() {
-                    const usd = e.waccCcy === "USD",
-                        rfOth = usd ? e.riskFreeRateCny : e.riskFreeRateUsd,
-                        rdB = e.debtCountryRisk ? (rfOth + e.countryDefSpread + e.creditSpread) : e.waccRd,
-                        reB = rfOth + waccBetaL * e.erp + e.crp, waccB = i * reB + c * rdB * (1 - p),
+                    const sel = e.waccCcy, lc = e.localCcy || "",
+                        rfOf = cd => cd === "CNY" ? e.riskFreeRateCny : cd === "USD" ? e.riskFreeRateUsd : (e.riskFreeRateLocal || e.riskFreeRateUsd),
+                        other = sel === "CNY" ? "USD" : (sel === "USD" ? "CNY" : "USD"),
+                        col = cd => {
+                            const rf = rfOf(cd),
+                                rd = e.debtCountryRisk ? (rf + e.countryDefSpread + e.creditSpread) : e.waccRd,
+                                re = rf + waccBetaL * e.erp + e.crp;
+                            return {rf: rf, rd: rd, re: re, at: rd * (1 - p), wa: i * re + c * rd * (1 - p)};
+                        },
+                        A = col(sel), B = col(other), C = col(lc || "USD"),
                         F = v => (100 * v).toFixed(2) + "%",
+                        nm = cd => cd === "CNY" ? "人民币" : cd === "USD" ? "美元" : ((LOCAL_CCY_DB[cd] || {}).cn || cd || "—"),
                         S = (id, t) => { const n = d(id); n && (n.textContent = t) };
-                    S("waccCmpCcyA", usd ? "美元（本模型）" : "人民币（本模型）"),
-                    S("waccCmpCcyB", usd ? "人民币（对照）" : "美元（对照）"),
-                    S("waccCmpRfA", F(e.riskFreeRate)), S("waccCmpRfB", F(rfOth)),
-                    S("waccCmpBlA", waccBetaL.toFixed(2)), S("waccCmpBlB", waccBetaL.toFixed(2)),
-                    S("waccCmpReA", F(o)), S("waccCmpReB", F(reB)),
-                    S("waccCmpRdA", F(r)), S("waccCmpRdB", F(rdB)),
-                    S("waccCmpRdAtA", F(r * (1 - p))), S("waccCmpRdAtB", F(rdB * (1 - p))),
-                    S("waccCmpWaccA", F(l)), S("waccCmpWaccB", F(waccB))
+                    S("waccCmpCcyA", nm(sel) + (sel === lc ? "（本国货币·本模型）" : "（本模型）")),
+                    S("waccCmpCcyB", nm(other) + "（对照）"),
+                    S("waccCmpCcyC", lc ? (nm(lc) + (lc === sel ? "（＝本模型）" : "（本国货币）")) : "—（无本币）"),
+                    S("waccCmpRfA", F(A.rf)), S("waccCmpRfB", F(B.rf)), S("waccCmpRfC", lc ? F(C.rf) : "—"),
+                    S("waccCmpBlA", waccBetaL.toFixed(2)), S("waccCmpBlB", waccBetaL.toFixed(2)), S("waccCmpBlC", lc ? waccBetaL.toFixed(2) : "—"),
+                    S("waccCmpReA", F(A.re)), S("waccCmpReB", F(B.re)), S("waccCmpReC", lc ? F(C.re) : "—"),
+                    S("waccCmpRdA", F(A.rd)), S("waccCmpRdB", F(B.rd)), S("waccCmpRdC", lc ? F(C.rd) : "—"),
+                    S("waccCmpRdAtA", F(A.at)), S("waccCmpRdAtB", F(B.at)), S("waccCmpRdAtC", lc ? F(C.at) : "—"),
+                    S("waccCmpWaccA", F(A.wa)), S("waccCmpWaccB", F(B.wa)), S("waccCmpWaccC", lc ? F(C.wa) : "—")
                 }(), renderWaccSensitivity();
             const f = 1e4 * e.dcCap,
                 g = 1e4 * e.acCap * e.storageRatio,
@@ -2523,7 +2592,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
 <div class="metric-card project">
     <div class="label">全投资NPV <span class="en" style="font-weight:400;font-size:0.6rem;color:#4a7a7a">Project NPV</span></div>
     <div class="value">${Zt(Ft)}</div>
-    <div class="sub"><span class="en">${Math.abs(Ft) >= 1e4 ? "100M CNY" : "10K CNY"}</span> &nbsp;|&nbsp; <span class="en">WACC</span> ${Qt(l)} <span class="en" style="font-weight:400;color:#6a8a9a">${e.waccCcy==="USD"?"USD":"RMB"}</span></div>
+    <div class="sub"><span class="en">${Math.abs(Ft) >= 1e4 ? "100M CNY" : "10K CNY"}</span> &nbsp;|&nbsp; <span class="en">WACC</span> ${Qt(l)} <span class="en" style="font-weight:400;color:#6a8a9a">${ccyShort(e.waccCcy)}</span></div>
 </div>
 <div class="metric-card project">
     <div class="label">全投资回收期 <span class="en" style="font-weight:400;font-size:0.6rem;color:#4a7a7a">Project Payback</span></div>
@@ -2539,7 +2608,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
 <div class="metric-card equity">
     <div class="label">资本金NPV <span class="en" style="font-weight:400;font-size:0.6rem;color:#4a7a7a">Equity NPV</span></div>
     <div class="value">${Zt(St)}</div>
-    <div class="sub"><span class="en">${Math.abs(St) >= 1e4 ? "100M CNY" : "10K CNY"}</span> &nbsp;|&nbsp; <span class="en">WACC</span> ${Qt(l)} <span class="en" style="font-weight:400;color:#6a8a9a">${e.waccCcy==="USD"?"USD":"RMB"}</span></div>
+    <div class="sub"><span class="en">${Math.abs(St) >= 1e4 ? "100M CNY" : "10K CNY"}</span> &nbsp;|&nbsp; <span class="en">WACC</span> ${Qt(l)} <span class="en" style="font-weight:400;color:#6a8a9a">${ccyShort(e.waccCcy)}</span></div>
 </div>
 <div class="metric-card equity">
     <div class="label">资本金回收期 <span class="en" style="font-weight:400;font-size:0.6rem;color:#4a7a7a">Equity Payback</span></div>
@@ -2611,7 +2680,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             aa += '<div class="lcoe-formula">LCOE = (总投资 + 运营成本现值 - 折旧抵税现值 - 残值现值) / 发电量现值</div>', aa += '<table class="lcoe-table"><thead><tr><th style="width:40%">项目 <span class="en" style="font-weight:400;font-size:0.65rem;color:#6a8a9a">Item</span></th><th style="width:35%">说明 <span class="en" style="font-weight:400;font-size:0.65rem;color:#6a8a9a">Note</span></th><th style="width:25%">金额(万元) <span class="en" style="font-weight:400;font-size:0.65rem;color:#6a8a9a">Amount(10K CNY)</span></th></tr></thead><tbody>';
             let na = 0;
             for (const e of ta) na++, aa += `<tr><td>${na}. ${e.cn}<br><span class="en" style="font-size:0.6rem;color:#6a8a9a">${e.label}</span></td><td style="font-size:0.65rem;color:#6a8a9a">${e.note}</td><td style="text-align:right;font-weight:600">${ea(e.value)}</td></tr>`;
-            aa += `<tr class="lcoe-total"><td>分子合计 <span class="en" style="font-size:0.6rem;color:#6a8a9a">Numerator Total</span></td><td style="font-size:0.65rem;color:#6a8a9a">Total Invest + PV(Opex - TaxShield - Residual)</td><td style="text-align:right;font-weight:700;color:#0d7c3f">${ea(P+Bt-Nt-Yt)}</td></tr>`, aa += `<tr><td>发电量现值 <span class="en" style="font-size:0.6rem;color:#6a8a9a">PV of Generation</span></td><td style="font-size:0.65rem;color:#6a8a9a">∑ Generation_t / (1+WACC)^t (万kWh)</td><td style="text-align:right;font-weight:600">${ea(Ht)}</td></tr>`, aa += `<tr class="lcoe-result"><td>LCOE <span class="en" style="font-size:0.6rem;color:#6a8a9a">Levelized Cost</span></td><td style="font-size:0.65rem;color:#6a8a9a">Numerator / PV of Generation</td><td style="text-align:right;font-weight:700;color:#b8860b;font-size:1rem">${qt.toFixed(4)} <span style="font-size:0.65rem;color:#6a8a9a;font-weight:400">CNY/kWh</span></td></tr>`, aa += "</tbody></table>", aa += '<div style="font-size:0.6rem;color:#8a9aaa;margin-top:4px;text-align:right">WACC = ' + (100 * l).toFixed(2) + "%（" + (e.waccCcy==="USD"?"美元 USD":"人民币 RMB") + "） &nbsp;|&nbsp; 运营期 N = " + a + ' <span class="en" style="font-weight:400;font-size:0.6rem;color:#8a9aaa">years</span></div>', document.getElementById("lcoeDetail").innerHTML = aa;
+            aa += `<tr class="lcoe-total"><td>分子合计 <span class="en" style="font-size:0.6rem;color:#6a8a9a">Numerator Total</span></td><td style="font-size:0.65rem;color:#6a8a9a">Total Invest + PV(Opex - TaxShield - Residual)</td><td style="text-align:right;font-weight:700;color:#0d7c3f">${ea(P+Bt-Nt-Yt)}</td></tr>`, aa += `<tr><td>发电量现值 <span class="en" style="font-size:0.6rem;color:#6a8a9a">PV of Generation</span></td><td style="font-size:0.65rem;color:#6a8a9a">∑ Generation_t / (1+WACC)^t (万kWh)</td><td style="text-align:right;font-weight:600">${ea(Ht)}</td></tr>`, aa += `<tr class="lcoe-result"><td>LCOE <span class="en" style="font-size:0.6rem;color:#6a8a9a">Levelized Cost</span></td><td style="font-size:0.65rem;color:#6a8a9a">Numerator / PV of Generation</td><td style="text-align:right;font-weight:700;color:#b8860b;font-size:1rem">${qt.toFixed(4)} <span style="font-size:0.65rem;color:#6a8a9a;font-weight:400">CNY/kWh</span></td></tr>`, aa += "</tbody></table>", aa += '<div style="font-size:0.6rem;color:#8a9aaa;margin-top:4px;text-align:right">WACC = ' + (100 * l).toFixed(2) + "%（" + ccyLabel(e.waccCcy) + "） &nbsp;|&nbsp; 运营期 N = " + a + ' <span class="en" style="font-weight:400;font-size:0.6rem;color:#8a9aaa">years</span></div>', document.getElementById("lcoeDetail").innerHTML = aa;
             const sa = [];
             for (let e = 0; e < n; e++) sa.push(e < t ? 0 === e ? '建设期<span class="en">Construction Period</span>' : `建设期${e+1}<span class="en">Construction Period</span>` : "Y" + (e - t + 1));
             const oa = lt.map(e => e / 100),
@@ -3739,7 +3808,9 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 Object.entries(t).forEach(([e, t]) => {
                     const a = document.getElementById(e);
                     a && (a.value = t)
-                }), "function" == typeof window._decRecalc && window._decRecalc()
+                }), "function" == typeof refreshLocalCcyOption && (refreshLocalCcyOption(false),
+                    function() { const sel = document.getElementById("p_waccCcy"), sv = t.p_waccCcy; sel && sv && sv !== "CNY" && sv !== "USD" && (sel.value = sv); }()),
+                    "function" == typeof window._decRecalc && window._decRecalc()
             } catch (e) {}
         }
         calcAll = function() {
