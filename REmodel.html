@@ -3918,6 +3918,10 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                         e.addEventListener("input", saveFormState), e.addEventListener("change", saveFormState)
                     })
             } catch (e) {}
+            document.addEventListener("wheel", function (e) {
+                var a = document.activeElement;
+                a && a.tagName === "INPUT" && a.type === "number" && a.blur();
+            }, { passive: false });
             toggleInsuranceRates(), toggleCostMethod(), window._blockRates = {};
             var e = document.getElementById("p_projGenType")?.value || "pv";
             window._blockRates[0] = .1, window._blockRates[1] = .25, window._blockRates[2] = .3, window._blockRates[3] = .35, "pv" === e && (window._blockRates[4] = .35), calcAll(),
