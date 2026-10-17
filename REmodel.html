@@ -1876,7 +1876,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
         function updateWaccDataLine(){
             const el=document.getElementById("waccDataSource"); if(!el) return;
             const sel=document.getElementById("p_waccCcy"); const ccy=sel?sel.value:"CNY";
-            el.textContent="取数：Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+" · 折现币种 "+ccyLabel(ccy)+dscrSuffix();
+            el.textContent="取数：Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+" · 折现币种 "+ccyLabel(ccy)+waccFetchedLabel()+dscrSuffix();
             refreshCcyOptionLabels();
         }
         // 国别类别：按主权评级分三档，决定"相对主权项目溢价"的整体水平（不手改）
@@ -1933,12 +1933,18 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             return false;
         }
         async function fetchViaProxy(url){
-            const tries=[url,
-                "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
-                "https://corsproxy.io/?"+encodeURIComponent(url),
-                "https://r.jina.ai/"+url];
+            // 缓存击穿：给目标 URL 加时间戳，避免代理/CDN 回放旧快照
+            const target=url+(url.indexOf("?")>=0?"&":"?")+"_ts="+Date.now();
+            const tries=[target,
+                "https://api.allorigins.win/raw?url="+encodeURIComponent(target),
+                "https://corsproxy.io/?"+encodeURIComponent(target),
+                "https://r.jina.ai/"+target];
             for(const u of tries){
-                try{ const r=await fetch(u,{cache:"no-store"}); if(!r.ok) continue; const t=await r.text(); if(t&&t.length>500) return t; }catch(e){}
+                const ctl=(typeof AbortController!=="undefined")?new AbortController():null;
+                const timer=ctl?setTimeout(function(){try{ctl.abort()}catch(e){}},8000):null;
+                try{ const r=await fetch(u,{cache:"no-store",signal:ctl?ctl.signal:undefined}); if(!r.ok) continue; const t=await r.text(); if(t&&t.length>500) return t; }
+                catch(e){}
+                finally{ if(timer) clearTimeout(timer); }
             }
             return null;
         }
@@ -1970,29 +1976,73 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
                 return n;
             }catch(e){ return 0; }
         }
-        let _waccFetchAt=0;
-        async function refreshWaccData(silent){
+        let _waccFetchAt=0;          // 最近一次成功取数
+        let _waccFetchedAt=0;        // 同义（成功时间戳，供界面显示）
+        let _waccCheckedAt=0;        // 最近一次尝试（无论成败）
+        let _waccBusy=false;         // 并发保护
+        let _waccRetryTimer=null;
+        const WACC_AUTO_MS=10*60*1000;    // 周期刷新：每 10 分钟
+        const WACC_MIN_GAP_MS=2*60*1000;  // 自动刷新最小间隔：2 分钟
+        const WACC_STALE_MS=5*60*1000;    // 窗口重新可见且过期：5 分钟
+        const WACC_RETRY_MS=60*1000;      // 失败后 60 秒重试
+        function waccOnline(){ return typeof navigator==="undefined" || navigator.onLine!==false; }
+        function waccFetchedLabel(){
+            if(!_waccFetchedAt) return "";
+            const d=new Date(_waccFetchedAt), p=function(n){return String(n).padStart(2,"0");};
+            return " · 更新于 "+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes());
+        }
+        function maybeRefreshWacc(force){
+            if(_waccBusy || !waccOnline()) return;
+            if(!force && _waccCheckedAt && (Date.now()-_waccCheckedAt)<WACC_MIN_GAP_MS) return;
+            setTimeout(function(){ try{ refreshWaccData(true,true); }catch(e){} },0);
+        }
+        async function refreshWaccData(silent,auto){
             const el=document.getElementById("waccDataSource");
-            if(el&&!silent) el.textContent="正在联网取数…";
-            let ok=false;
-            const ct=await fetchViaProxy("https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ctryprem.html");
-            if(ct&&parseCtryPrem(ct)>50) ok=true;
-            const bt=await fetchViaProxy("https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/BetasGlobal.html");
-            if(bt) parseBetasGlobal(bt);
-            const rf=await fetchViaProxy("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10");
-            if(rf){
-                const lines=rf.trim().split(/\r?\n/).filter(x=>x.indexOf(",")>0&&!isNaN(parseFloat(x.split(",")[1])));
-                if(lines.length){ const last=lines[lines.length-1], v=parseFloat(last.split(",")[1]); if(v>0&&v<20){ RF_DB.usd10y=v; RF_DB.asof=last.split(",")[0]; } }
+            if(_waccBusy) return false;
+            if(!waccOnline()){
+                if(el&&!silent) el.textContent="当前离线，使用内置快照 · Damodaran ctryprem / BetasGlobal";
+                return false;
             }
-            if(ok) WACC_DATA_ASOF=new Date().toISOString().slice(0,10);
-            _waccFetchAt=Date.now();
-            // 把刷新到的最新无风险利率写回模型输入（否则只更新 RF_DB，模型与下拉标签仍停留在旧值）
-            const _rf=document.getElementById("p_riskFreeRate"); if(_rf && isFinite(RF_DB.usd10y)) _rf.value=RF_DB.usd10y;
-            const _rfc=document.getElementById("p_riskFreeRateCny"); if(_rfc && isFinite(RF_DB.rmb10y)) _rfc.value=RF_DB.rmb10y;
-            populateWaccSelects(true); applyCountry(false); applySector();
-            if(typeof calcAll==="function") calcAll();
-            if(el) el.textContent=(ok?"已联网更新 · ":"联网失败，用离线快照 · ")+"Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+dscrSuffix();
+            _waccBusy=true; _waccCheckedAt=Date.now();
+            if(el) el.textContent="正在联网取数…";
+            let ok=false, okBeta=false, okRf=false;
+            try{
+                const ct=await fetchViaProxy("https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ctryprem.html");
+                if(ct&&parseCtryPrem(ct)>50) ok=true;
+                const bt=await fetchViaProxy("https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/BetasGlobal.html");
+                if(bt&&parseBetasGlobal(bt)>30) okBeta=true;
+                const rf=await fetchViaProxy("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10");
+                if(rf){
+                    const lines=rf.trim().split(/\r?\n/).filter(x=>x.indexOf(",")>0&&!isNaN(parseFloat(x.split(",")[1])));
+                    if(lines.length){ const last=lines[lines.length-1], v=parseFloat(last.split(",")[1]); if(v>0&&v<20){ RF_DB.usd10y=v; RF_DB.asof=last.split(",")[0]; okRf=true; } }
+                }
+                const any=ok||okBeta||okRf;
+                if(ok) WACC_DATA_ASOF=new Date().toISOString().slice(0,10);
+                if(any){ _waccFetchedAt=Date.now(); _waccFetchAt=_waccFetchedAt; }
+                // 把刷新到的最新数据写回模型输入（否则只更新常量，模型与下拉标签仍停留在旧值）
+                const _rf=document.getElementById("p_riskFreeRate"); if(_rf && okRf && isFinite(RF_DB.usd10y)) _rf.value=RF_DB.usd10y;
+                const _rfc=document.getElementById("p_riskFreeRateCny"); if(_rfc && isFinite(RF_DB.rmb10y)) _rfc.value=RF_DB.rmb10y;
+                if(ok||okBeta) populateWaccSelects(true);
+                if(ok) applyCountry(false);
+                if(okBeta) applySector();
+                if(typeof calcAll==="function") calcAll();
+                if(el) el.textContent=(any?"已联网更新 · ":"联网失败，用离线快照 · ")+"Damodaran ctryprem / BetasGlobal · 数据日期 "+WACC_DATA_ASOF+waccFetchedLabel()+dscrSuffix();
+            } finally {
+                _waccBusy=false;
+                clearTimeout(_waccRetryTimer);
+                if(!(ok||okBeta||okRf) && waccOnline())
+                    _waccRetryTimer=setTimeout(function(){ try{ maybeRefreshWacc(true); }catch(e){} },WACC_RETRY_MS);
+            }
             return ok;
+        }
+        function scheduleWaccAutoRefresh(){
+            setInterval(function(){ try{ maybeRefreshWacc(false); }catch(e){} },WACC_AUTO_MS);
+            window.addEventListener("online",function(){ try{ maybeRefreshWacc(true); }catch(e){} });
+            document.addEventListener("visibilitychange",function(){
+                if(document.visibilityState==="visible" && (!_waccFetchedAt || (Date.now()-_waccFetchedAt)>WACC_STALE_MS)){
+                    try{ maybeRefreshWacc(false); }catch(e){}
+                }
+            });
         }
         function onCountryChange(){ applyCountry(true); populateWaccSelects(false); saveFormState(); if(typeof calcAll==="function") calcAll(); }
         function onSectorChange(){ applySector(); saveFormState(); if(typeof calcAll==="function") calcAll(); }
@@ -3966,6 +4016,7 @@ const SECTOR_BU = {"Advertising":0.98,"Aerospace/Defense":1.12,"Air Transport":0
             toggleInsuranceRates(), toggleCostMethod(), window._blockRates = {};
             var e = document.getElementById("p_projGenType")?.value || "pv";
             window._blockRates[0] = .1, window._blockRates[1] = .25, window._blockRates[2] = .3, window._blockRates[3] = .35, "pv" === e && (window._blockRates[4] = .35), calcAll(),
+                scheduleWaccAutoRefresh(),
                 setTimeout(() => { try { refreshWaccData(true) } catch (e) {} }, 600)
         });
     </script>
