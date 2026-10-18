@@ -223,6 +223,77 @@
             -webkit-backdrop-filter: blur(2px);
         }
 
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .price-card {
+            background: rgba(10, 24, 22, 0.55);
+            border: 1px solid rgba(0, 208, 132, 0.28);
+            border-radius: 18px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        .price-card.best {
+            border-color: #00d084;
+            background: rgba(0, 208, 132, 0.08);
+        }
+
+        .price-card h4 {
+            font-size: 1rem;
+            color: #dff5ec;
+            margin: 0 0 0.4rem;
+        }
+
+        .price-card .price {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #00d084;
+            margin: 0.3rem 0;
+        }
+
+        .price-card .fit {
+            font-size: 0.78rem;
+            color: #b9d6cd;
+            line-height: 1.5;
+            min-height: 2.4em;
+        }
+
+        .price-card a.buy-btn {
+            display: inline-block;
+            margin-top: 0.8rem;
+            background: #00d084;
+            color: #061a14;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: background 0.2s;
+        }
+
+        .price-card a.buy-btn:hover {
+            background: #00e894;
+        }
+
+        .pricing-note {
+            margin-top: 1.4rem;
+            font-size: 0.86rem;
+            line-height: 1.7;
+            color: #b9d6cd;
+            text-align: center;
+        }
+
+        .pricing-note a {
+            color: #00d084;
+        }
+
         h2.section-title {
             font-size: 2.5rem;
             font-weight: 700;
@@ -631,6 +702,7 @@
         <a href="#about"><i class="fas fa-leaf"></i> 关于 about</a>
         <a href="#business"><i class="fas fa-solar-panel"></i> 业务 Business</a>
         <a href="#projects"><i class="fas fa-charging-station"></i> 项目 Projects</a>
+        <a href="#software"><i class="fas fa-laptop-code"></i> 軟件 Software</a>
         <a href="#contact"><i class="fas fa-envelope"></i> 联系 Contact</a>
     </nav>
 </header>
@@ -787,6 +859,64 @@
             <p style="text-align: justify;">移民、海外资产配置及家族办公室，实现国际化布局。</p>
             <p style="text-align: justify;">Immigration, overseas asset allocation and family office, achieving internationalization.</p>
         </div>
+    </div>
+</section>
+
+<!-- 軟件與價格 -->
+<section id="software" class="section section-alt">
+    <h2 class="section-title">RE 金融模型軟件 <span style="font-size:1.2rem;">RE Financial Model · Pricing</span></h2>
+    <p style="max-width:900px; line-height:1.8;">光伏与风电项目财务模型（macOS 桌面版）：10 组 134 项参数、14 张报表、LCOE/WACC 计算，支持中英对照与一键导出 Excel。每台 Mac 可免费试用累计 1 小时；也可先使用<a href="https://www.yellowfir.com/REmodel.html" target="_blank" rel="noopener" style="color:#00d084;">网页体验版</a>（仅可编辑第 1、2 组参数）。</p>
+    <p style="max-width:900px; line-height:1.8;">PV/Wind financial model for macOS: 134 parameters, 14 statements, LCOE &amp; WACC, bilingual UI, Excel export. One hour free trial per Mac; a <a href="https://www.yellowfir.com/REmodel.html" target="_blank" rel="noopener" style="color:#00d084;">web trial</a> is also available (parameter groups 1–2 only).</p>
+
+    <div class="pricing-grid">
+        <div class="price-card">
+            <h4>1 天 / 1 day</h4>
+            <div class="price">$2</div>
+            <div class="fit">单次测算、快速验证<br>One-off calculation</div>
+            <a class="buy-btn" href="https://license.resmodel.com/buy?plan=d1" target="_blank" rel="noopener">购买 Buy</a>
+        </div>
+        <div class="price-card">
+            <h4>7 天 / 7 days</h4>
+            <div class="price">$5</div>
+            <div class="fit">短期尽调或投标<br>Short due diligence</div>
+            <a class="buy-btn" href="https://license.resmodel.com/buy?plan=d7" target="_blank" rel="noopener">购买 Buy</a>
+        </div>
+        <div class="price-card">
+            <h4>1 月 / 1 month</h4>
+            <div class="price">$7</div>
+            <div class="fit">项目前期论证<br>Project screening</div>
+            <a class="buy-btn" href="https://license.resmodel.com/buy?plan=m1" target="_blank" rel="noopener">购买 Buy</a>
+        </div>
+        <div class="price-card">
+            <h4>3 月 / 3 months</h4>
+            <div class="price">$12</div>
+            <div class="fit">可研与投资决策<br>Feasibility study</div>
+            <a class="buy-btn" href="https://license.resmodel.com/buy?plan=m3" target="_blank" rel="noopener">购买 Buy</a>
+        </div>
+        <div class="price-card">
+            <h4>半年 / 6 months</h4>
+            <div class="price">$20</div>
+            <div class="fit">交易推进期<br>Deal execution</div>
+            <a class="buy-btn" href="https://license.resmodel.com/buy?plan=m6" target="_blank" rel="noopener">购买 Buy</a>
+        </div>
+        <div class="price-card best">
+            <h4>一年 / 1 year ★</h4>
+            <div class="price">$35</div>
+            <div class="fit">全年多项目使用<br>Year-round use</div>
+            <a class="buy-btn" href="https://license.resmodel.com/buy?plan=y1" target="_blank" rel="noopener">购买 Buy</a>
+        </div>
+        <div class="price-card best">
+            <h4>永久 / Lifetime</h4>
+            <div class="price">$50</div>
+            <div class="fit">长期自用、不受期限限制<br>Permanent use</div>
+            <a class="buy-btn" href="https://license.resmodel.com/buy?plan=life" target="_blank" rel="noopener">购买 Buy</a>
+        </div>
+    </div>
+
+    <div class="pricing-note">
+        一次性付费、按设备授权、不自动续费；以美元结算，由 Paddle 作为 Merchant of Record 收款并处理税费。<br>
+        付款后请在软件「恢复授权」中输入支付完成页显示的订单号；也可在软件内直接购买并自动解锁。<br>
+        <a href="https://www.yellowfir.com/res-financial-model.html" target="_blank" rel="noopener">下载软件与完整说明 Download &amp; full details →</a>
     </div>
 </section>
 
