@@ -7,12 +7,13 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Astraroad Limited | 绿色能源 · 跨境投资 · 专业咨询</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico?v=7">
-    <link rel="shortcut icon" href="favicon.ico?v=7" type="image/x-icon">
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-48.png?v=7">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=7">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=7">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png?v=7">
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v=8">
+    <link rel="shortcut icon" href="favicon.ico?v=8" type="image/x-icon">
+    <link rel="icon" type="image/svg+xml" href="astraroad-icon.svg?v=8">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=8">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=8">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=8">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png?v=8">
     <script>
     // Safari favicon workaround: Safari blocks raw.githubusercontent.com favicons due to CSP
     if (/^((?!chrome|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent)) {
@@ -84,7 +85,8 @@
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
+            /* 16px ≥ 标志清空区（图标高 60 的 1/4 = 15） */
+            gap: 16px;
             padding: 6px 0;
             min-width: 0;
             flex-shrink: 1;
@@ -425,7 +427,7 @@
                 padding-top: 1rem;
                 border-top: 1px solid #2c5b52;
             }
-            .cta-final .logo-img { height: 120px !important; }
+            .cta-final .logo-img { height: 120px !important; width: auto !important; }
             h2.section-title { font-size: 1.5rem; }
             h3.section-title { font-size: 1.3rem; }
         }
@@ -502,7 +504,7 @@
                 border-top: 1px solid #2c5b52;
             }
             .cta-final { margin: 3rem auto 0; }
-            .cta-final .logo-img { height: 140px !important; }
+            .cta-final .logo-img { height: 140px !important; width: auto !important; }
             footer.site { margin-top: 3rem; padding: 2rem 1rem; }
         }
 
@@ -621,8 +623,8 @@
 
 <header>
     <div class="logo-area">
-        <!-- 替换为真实的 image.png 的公司logo (Base64 编码保证独立展示) -->
-        <img class="logo-img" src="astraroad-logo-blue.png" alt="Astraroad Official Logo">
+        <!-- 官方标志（D-202611-007）：横向锁定，深底版 = 四色图标 + 反白字标 -->
+        <img class="logo-img" src="astraroad-horizontal-on-dark.svg" alt="Astraroad Official Logo">
         <div class="brand-text">
             <span class="brand-tagline">Green Energy · Investment · Consultant</span>
         </div>
@@ -651,7 +653,7 @@
     
     <!-- Logo 区域（可选，放在标题下方） -->
     <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-        <img src="astraroad-logo-blue.png" alt="Astraroad Logo Emblem" style="width:100%; max-width:150px; border: none; padding: 0; background: transparent;">
+        <img src="astraroad-icon.svg" alt="Astraroad Logo Emblem" style="width:100%; max-width:150px; border: none; padding: 0; background: transparent;">
     </div>        
     
     <!-- 中英文双栏布局 -->
@@ -814,7 +816,7 @@
 <!-- CTA -->
 <section class="cta-final">
    <div class="brand">
-      <img class="logo-img" src="astraroad-logo-blue.png" alt="Astraroad Logo" style="height:200px"/>
+      <img class="logo-img" src="astraroad-vertical-on-dark.svg" alt="Astraroad Logo" style="width:282px"/>
     </div>
     <h2>一同<span class="italic text-gradient">点亮</span>下一个十年</h2>
     <h3><span class="italic text-gradient">Lighting </span>The Next 10 Years Together</h3>
